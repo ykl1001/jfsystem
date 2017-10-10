@@ -1,0 +1,12 @@
+<select name="sname" id="sname">
+	{/$j=count($peop)/}
+    {/if $j>0/}
+        <option value="0">请选择</option>
+        {/for $i=0; $i < $j; $i++/}
+            {/$peo = $peop[$i]/}
+            <option value="{/$peo['staff_id']/}">{/$peo['staff_name']/}</option>
+        {//for/}
+    {/else/}
+    	<option value="0">该职位还没有员工</option>
+    {//if/}
+</select>

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<link type="text/css" href="{/getfile 'css' 'base'/}" rel="stylesheet">
+<script type="text/javascript" src="{/getfile 'js' 'jquery-1.8.3.min'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'base'/}"></script>
+<title>员工信息查看</title>
+</head>
+<body>
+	<div class="b1">
+    	<center>
+        	<font size="+3">员工积分处理</font>
+        </center>
+        
+        <form method="post" name="score" action="{/geturl 'main/dealscore' 'main'/}">
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">员工姓名：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                    <input type="text" autocomplete="off" class="w130 left" name="staffName">
+                    <div class="tips left">
+                        <label id="loading" class="hidden">
+                            <img src="{/getpicurl 'loading' 'gif' 'bg'/}"/>
+                        </label>
+                        <label id="no" class="hidden">
+                            <img src="{/getpicurl 'no' 'png' 'bg'/}"/> 没有找到这位员工，请核对
+                        </label>
+                        <label id="yes" class="hidden">
+                            <img src="{/getpicurl 'ok' 'png' 'bg'/}"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="w750 hidden" id="similar">
+                <div class="w130 textr left h30 vmiddle lineh30">您要找的是不是：</div>
+                 <div class="w600 textl left h30 vmiddle lineh30" name="staffs"></div>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">积分代码：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<input type="text" autocomplete="off" class="w60" name="scoreCode"> 
+                </div>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">加分/减分：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<input type="radio" value="1" checked="checked" name="scoreDeal">加分 
+                    <input type="radio" value="-1" name="scoreDeal">减分 
+                </div>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">处理类型：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<select name="score_class" id="selectClass">
+                		<option value="0">请选择</option>
+                    	{/for $i=0,$j=count($scoreTypes); $i<$j; $i++/}
+                        	{/$type = $scoreTypes[$i]/}
+                            <option value="{/$type['class_id']/}">{/$type['class_name']/}</option>
+                        {//for/}
+                    </select>
+                </div>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">处理原因：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<select name="score_detail" id="selectDetail">
+                		<option value="0">请选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="w750" align="center"> 
+            	<div class="w130 textr h30 vmiddle lineh30">
+                	<input type="submit" value="提交" class="w60 h30"/>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">员工数据录入</div>
+                <div class="jfcl">
+                	<div class="jfcl_kj">
+                    <form action="{/geturl 'main/savestaff' 'main'/}" method="post">
+                   	  <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-top:22px;
+                                    margin-left:59px;">
+                       	<div class="word05">员工姓名：
+                        </div>
+                        <input class="wbk03" type="text" name="staffName"/>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工性别：
+                        </div>
+                       	  <label for="select"></label>
+                       	  <select class="wbk04" name="sex" id="select">
+                          	<option value="0">女</option>
+                            <option value="1">男</option>
+                   	      </select>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">入职时间：
+                        </div>
+                       	  <input type="text" class="wbk03" name="joinymd" onclick="WdatePicker()" autocomplete="off"/>
+                        </div>
+                        <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">初始积分：
+                        </div>
+                        <input class="wbk05" type="text" name="score" value="200"/>
+                        </div>
+                        <div style="width:370px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工职务：
+                        </div>
+                            <select name="steam" id="steam" style="width:110px;">
+                                <option value="0">请选择</option>
+                                {/for $i=0,$j=count($teams); $i < $j; $i++/}
+                                    {/$team = $teams[$i]/}
+                                    <option value="{/$team['pos_id']/}">{/$team['pos_name']/}</option>
+                                {//for/}
+                            </select>
+                             职位：
+                            <select name="spos" id="spos">
+                                <option value="0">请选择</option>
+                            </select>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工权限：
+                        </div>
+                       	  <label for="select2"></label>
+                       	  <select class="wbk04" name="staffLimit" id="select2" style="width:100px;">
+                          	<option value="0">普通</option>
+                            <option value="1">管理员</option>
+                   	      </select>
+                           等级:
+                            <select name="posLevel" id="spos">
+                                <option value="1">高层</option>
+                                <option value="2">中层</option>
+                                <option value="3" selected>普通</option>
+                            </select>
+                        </div>
+                        <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工密码：
+                        </div>
+                        <input class="wbk03" type="text" name="password" value="123456"/>
+                        </div>
+                   	  <div class="tj01"><img src="{/getpicurl 'tj' 'png' 'bg'/}" width="126" height="32" />
+                        </div>
+                      </form>
+                    </div>
+                </div>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

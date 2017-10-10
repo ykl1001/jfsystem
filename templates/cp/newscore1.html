@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="{/getfile 'js' 'jquery-1.8.3.min'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'base'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'clock/WdatePicker'/}"></script>
+<link type="text/css" href="{/getfile 'css' 'base'/}" rel="stylesheet">
+<meta charset="utf-8">
+<title>员工信息录入</title>
+</head>
+
+<body>
+	<div class="b1">
+    	<center>
+        	<font size="+3">添加积分项目</font>
+        </center>
+        <form action="{/geturl 'main/addscore' 'main'/}" method="post">
+            <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">积分代码</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" autocomplete="off" class="w60" name="score_code"></div>
+            </div>
+        	
+            <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">积分类型</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<select name="score_class">
+                		<option value="0">请选择</option>
+                    	{/for $i=0,$j=count($scoreTypes); $i<$j; $i++/}
+                        	{/$type = $scoreTypes[$i]/}
+                            <option value="{/$type['class_id']/}">{/$type['class_name']/}</option>
+                        {//for/}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="w500">
+                <div class="w130 textr left h30 vmiddle lineh30">积分原因</div>
+                <div class="w370 textl left h30 vmiddle lineh30">：<input name="detail" autocomplete="off" type="text" class="w330" ></div>
+            </div>
+            
+             <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">分值</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" autocomplete="off" class="w30" name="score" value=""> 扣分请用负数</div>
+            </div>
+            
+            <div class="w400" align="center">
+                <input type="submit" value="提交" class="h30 w60"/>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

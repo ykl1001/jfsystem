@@ -1,0 +1,64 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">
+                	积分报表查看
+                </div>
+                <div class="xi_middle_right_z">
+             <table width="760">
+			 	<tr>
+                	<td colspan="8" height="36" valign="middle">
+                        <form action="{/geturl 'main/ranking' 'main'/}" method="get">
+                            <div class="left ml5">
+                                从<input class="w80" type="text" onclick="WdatePicker()" autocomplete="off" value="{/$strt/}" name="strt">至<input value="{/$endt/}" class="w80" onclick="WdatePicker()" type="text" autocomplete="off" name="endt">时间段
+                                &nbsp;&nbsp;&nbsp;&nbsp;合计积分
+                                <select name="sort">
+                                	<option {/if $sort==1/}selected{//if/} value="1">降序</option>
+                                    <option {/if $sort==2/}selected{//if/} value="2">升序</option>
+                                </select>
+                                查看
+                                <input class="ml5" type="submit" value="查询"/>
+                           </div>
+                        </form>
+                    </td>
+               </tr>
+              <tr align="center" valign="middle">
+              	<td width="45"><span class="bt">排名</span></td>
+                <td width="89" height="36"><span class="bt">员工编号</span></td>
+                <td width="112" height="36"><span class="bt">员工姓名</span></td>
+                <td width="56" height="36"><span class="bt">性别</span></td>
+                <td width="130" height="36"><span class="bt">担任职务</span></td>
+                <td width="60" height="36"><span class="bt">加分</span></td>
+                <td width="60" height="36"><span class="bt">减分</span></td>
+                <td width="80" height="36"><span class="bt">合计</span></td>
+              </tr>
+              {/$j=count($staffs)/}
+              {/$r = $rank/}
+              {/if $j > 0/}
+                  {/for $i=0; $i<$j; $i++/}
+                      {/$staff = $staffs[$i]/}
+                      <tr align="center" valign="middle">
+                      	<td height="36"><span class="word02">{/$r++/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_id']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_name']/}</span></td>
+                        <td height="36"><span class="word02">{/if $staff['staff_sex'] == 0/}女{/else/}男{//if/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_level']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['add']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['sub']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['total']/}</span></td>
+                      </tr>
+                  {//for/}
+              {/else/}
+              	<td colspan="8" align="center" height="36"><span class="word02">该时段无积分处理记录</span></td>
+              {//if/}
+            </table>
+
+            </div>
+           {/if $pagebar/}{/$pagebar/}{//if/}
+          </div>
+        </div>
+
+{/include 'common/footer.html'/}

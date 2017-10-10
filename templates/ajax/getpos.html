@@ -1,0 +1,7 @@
+<select name="spos" id="spos">
+	<option value="0">请选择</option>
+    {/for $i=0,$j=count($poses); $i < $j; $i++/}
+        {/$pos = $poses[$i]/}
+        <option value="{/$pos['pos_id']/}">{/$pos['pos_name']/}</option>
+    {//for/}
+</select>

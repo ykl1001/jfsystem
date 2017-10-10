@@ -1,0 +1,122 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">积分处理</div>
+                <form method="post" name="score" action="{/geturl 'main/dealscore' 'main'/}">
+            <div class="w750 pb8">
+                部门：
+                <select name="pid" id="steam">
+                	<option value="0">请选择</option>
+                    {/for $i=0,$j=count($teams); $i < $j; $i++/}
+                        {/$team = $teams[$i]/}
+                        <option value="{/$team['pos_id']/}">{/$team['pos_name']/}</option>
+                    {//for/}
+                </select>
+                职位：
+                <select name="pid" id="spos">
+                	<option value="0">请选择</option>
+                </select>
+                姓名：
+                <select name="sname" id="sname">
+                	<option value="0">请选择</option>
+                </select>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">员工姓名：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                    <input type="text" autocomplete="off" class="w130 left" name="staffName">
+                    <div class="tips left">
+                        <label id="loading" class="hidden">
+                            <img src="{/getpicurl 'loading' 'gif' 'bg'/}"/>
+                        </label>
+                        <label id="no" class="hidden">
+                            <img src="{/getpicurl 'no' 'png' 'bg'/}"/> 没有找到这位员工，请核对
+                        </label>
+                        <label id="yes" class="hidden">
+                            <img src="{/getpicurl 'ok' 'png' 'bg'/}"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">处理人：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                    <input name="dealName" value="{/$staffName/}">
+                </div>
+            </div>
+            
+            <div class="w750 hidden" id="similar">
+                <div class="w130 textr left h30 vmiddle lineh30">您要找的是不是：</div>
+                 <div class="w600 textl left h30 vmiddle lineh30" name="staffs"></div>
+            </div>
+            
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">加分方式：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<input type="radio" name="rule" checked value="1">规则加分 <input type="radio" name="rule" value="2">临时加分
+                </div>
+            </div>
+            <div class="w750">
+                <div class="w130 textr left h30 vmiddle lineh30">加分时间：</div>
+                <div class="w600 textl left h30 vmiddle lineh30">
+                	<input type="text" value="{/date('Y-m-d')/}" autocomplete="off" name="addtime" onClick="WdatePicker()" class="w80">
+                </div>
+            </div>
+            <div id="rule1">
+                <div class="w750">
+                    <div class="w130 textr left h30 vmiddle lineh30">积分代码：</div>
+                    <div class="w600 textl left h30 vmiddle lineh30">
+                        <input type="text" autocomplete="off" class="w60" name="scoreCode"> 
+                    </div>
+                </div>
+                <div class="w750">
+                    <div class="w130 textr left h30 vmiddle lineh30">处理类型：</div>
+                    <div class="w600 textl left h30 vmiddle lineh30">
+                        <select name="score_class[]" id="selectClass">
+                            <option value="0">请选择</option>
+                            {/for $i=0,$j=count($scoreTypes); $i<$j; $i++/}
+                                {/$type = $scoreTypes[$i]/}
+                                <option value="{/$type['class_id']/}">{/$type['class_name']/}</option>
+                            {//for/}
+                        </select>
+                    </div>
+                </div>
+                <div class="w750">
+                    <div class="w130 textr left h30 vmiddle lineh30">处理原因：</div>
+                    <div class="w600 textl left h30 vmiddle lineh30">
+                        <select name="score_detail" id="selectDetail">
+                            <option value="0">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="rule2" class="hidden">
+            	<div class="w750">
+                    <div class="w130 textr left h30 vmiddle lineh30">处理原因：</div>
+                    <div class="w600 textl left h30 vmiddle lineh30">
+                        <input class="w400" type="text" name="dealdetail">
+                    </div>
+                </div>
+                
+                <div class="w750">
+                    <div class="w130 textr left h30 vmiddle lineh30">加/减分数：</div>
+                    <div class="w600 textl left h30 vmiddle lineh30">
+                        <input type="radio" name="prule" checked value="1">加分 <input type="radio" name="prule" value="-1">减分
+                        <input class="w80" type="text" name="score">
+                    </div>
+                </div>
+            </div>
+            <div class="w750" align="center"> 
+            	<div class="w130 textr h30 vmiddle lineh30">
+                	<input type="submit" value="提交" class="w60 h30"/>
+                </div>
+            </div>
+        </form>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

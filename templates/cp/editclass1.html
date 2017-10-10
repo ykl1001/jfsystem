@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="{/getfile 'js' 'jquery-1.8.3.min'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'base'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'clock/WdatePicker'/}"></script>
+<link type="text/css" href="{/getfile 'css' 'base'/}" rel="stylesheet">
+<meta charset="utf-8">
+<title>添加积分类型</title>
+</head>
+
+<body>
+	<div class="b1">
+    	<center>
+        	<font size="+3">添加积分类型</font>
+        </center>
+        <form action="{/geturl 'main/updateclass' 'main'/}" method="post">
+        	<input value="{/$class['class_id']/}" name="classId" type="hidden"/>
+            <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">类型名称</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" value="{/$class['class_name']/}" class="w130" autocomplete="off" name="className"></div>
+            </div>
+        	
+            <div class="w400" align="center">
+                <input type="submit" value="提交" class="h30 w60"/>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

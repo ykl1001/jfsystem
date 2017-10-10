@@ -1,0 +1,45 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">{/$staff['staff_name']/}的自动加分详情
+                </div>
+                <div class="xi_middle_right_z">
+             <table width="760">
+			 	
+              <tr align="center" valign="middle">
+                <td width="240" height="36"><span class="bt">加分原因</span></td>
+                <td width="35" height="36"><span class="bt">分值</span></td>
+                <td width="50" height="36"><span class="bt">加分间隔</span></td>
+                <td width="100" height="36"><span class="bt">操作</span></td>
+              </tr>
+              {/$j=count($autoscores)/}
+              {/if $j>0/}
+                  {/for $i=0; $i<$j; $i++/}
+                      {/$auto = $autoscores[$i]/}
+                      {/$autoId = $auto['score_detail_id']/}
+                      <tr align="center" valign="middle">
+                        <td height="36" align="left"><span class="word02">{/$details[$autoId]['detail']/}</span></td>
+                        <td height="36"><span class="word02">{/$details[$autoId]['score']/}</span></td>
+                        <td height="36"><span class="word02">{/$auto['add_interval']/}个月</span></td>
+                        <td height="36"><span class="word02">
+                        	<a href="{/geturl 'main/delauto' 'main'/}?sid={/$staff['staff_id']/}&aid={/$auto['auto_id']/}">删除</a>
+                        </td>
+                      </tr>
+                  {//for/}
+              {/else/}
+					  <tr>
+                      	<td colspan="4" align="center">暂无自动加分</td>
+                      </tr>
+              {//if/}
+            </table>
+
+            </div>
+           {/if $pagebar/}{/$pagebar/}{//if/}
+          </div>
+        </div>
+
+{/include 'common/footer.html'/}

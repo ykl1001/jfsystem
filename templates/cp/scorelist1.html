@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link type="text/css" href="{/getfile 'css' 'base'/}" rel="stylesheet">
+<meta charset="utf-8">
+<script type="text/javascript" src="{/getfile 'js' 'jquery-1.8.3.min'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'base'/}"></script>
+<title>员工信息查看</title>
+</head>
+
+
+<body>
+	<div class="b1" align="center">
+    	<center>
+        	<font size="+3">积分项目查看</font>
+        </center>
+    	<div class="w750" align="justify">
+        	<div>
+            	<a href="{/geturl 'main/newscore' 'main'/}">添加新积分项目</a>
+            </div>
+        	<table class="stafflist">
+            	<tr><th>积分编号</th><th>积分类型</th><th>项目代码</th><th>分值</th><th class="w330">项目详情</th><th>最后改动者</th><th>操作</th></tr>
+                {/$j = count($scores)/}
+                {/if $j > 0/}
+                    {/for $i=0; $i<$j; $i++/}
+                        {/$score = $scores[$i]/}
+                        <tr name="list"> 
+                            <td>{/$score['score_detail_id']/}</td>
+                            <td>{/$scoreTypes[$score['class_id']]/}</td>
+                            <td>{/$score['score_code']/}</td>
+                            <td>{/$score['score']/}</td>
+                            {/$str = $score['detail']/}
+                            <td class="textl">{/cutstr $str 18/}</td>
+                            <td>{/$score['staff_name']/}</td>
+                            <td><a href="{/geturl 'main/editscore' 'main'/}?sid={/$score['score_detail_id']/}">编辑</a>|<a name="del" href="{/geturl 'main/delscore' 'main'/}?sid={/$score['score_detail_id']/}">删除</a></td>
+                        </tr>
+                    {//for/}
+                    {/if $pagebar/}<tr><td colspan="5">{/$pagebar/}</td></tr>{//if/}
+				{/else/}
+                	<tr>
+                    	<td colspan="5">还没有积分项目请添加</td>
+                    </tr>
+                {//if/}
+            </table>
+        </div>    
+    </div>
+</body>
+</html>

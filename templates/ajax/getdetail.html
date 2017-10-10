@@ -1,0 +1,12 @@
+<select name="score_detail" id="selectDetail">
+    <option value="0">请选择</option>
+    {/for $i=0,$j=count($details); $i<$j; $i++/}
+		{/$detail = $details[$i]/}
+        <option t={/$detail['type']/} {/if $detail['type']==2/}mi={/$detail['score']/} mx={/$detail['score_max']/}{//if/} class="d" code="{/$detail['score_code']/}" value="{/$detail['score_detail_id']/}">{/$detail['detail']/}{/if $detail[score]>0/}加{/else/}减{//if/}{/$detail[score]/}{/if $detail['score_max']!=0/} 至 {/$detail['score_max']/}{//if/}分</option>
+    {//for/}
+</select>
+{/if $type==3/}
+<div id="interval" >
+每<input name="interval" type="text" class="w30">个月加分一次
+</div>
+{//if/}

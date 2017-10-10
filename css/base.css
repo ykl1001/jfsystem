@@ -1,0 +1,101 @@
+@charset "utf-8";
+/* CSS Document */
+/*通用*/
+body{margin:0px auto; width:100%;}
+iframe{width:100%; height:100%; border:0px;}
+img{border:0px;}
+/*通用*/
+
+/*登录框*/
+.loginbox{width:400px; height:200px; border:1px solid #000; margin-top:20px;}
+.logincover{width:100%; height:100%; background-color:#000; filter:alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;}
+.logininput{position:absolute; z-index:100; width:200px; text-align:right; margin-top:30px; margin-left:92px; *margin-left:-100px; *margin-top:40px;}
+/*登录框*/
+
+/*常用*/
+.w30{width:30px;}
+.w60{width:60px;}
+.w80{width:80px;}
+.w110{width:110px;}
+.w130{width:130px;}
+.w270{width:270px;}
+.w330{width:330px;}
+.w370{width:370px;}
+.w400{width:400px;}
+.w500{width:500px;}
+.w600{width:600px;}
+.w750{width:750px;}
+.h30{height:30px;}
+.h60{height:60px;}
+.h150{height:150px;}
+.h180{height:180px;}
+.hmiddle{text-align:center;}
+.mt10{margin-top:10px;}
+.ml20{margin-left:20px;}
+.ml5{margin-left:5px;}
+.pb8{padding-bottom:8px;}
+.lineh30{line-height:30px;}
+.vmiddle{vertical-align:middle;}
+.textl{ text-align:left;}
+.textr{text-align:right;}
+.left{float:left;}
+a:link,a:visited{color:#F00; text-decoration:none;}
+a:hover{text-decoration:underline; color:#F90;}
+.b1{width:100%; height:100%;}
+.nore{resize:none;}
+.hidden{ display:none;}
+.ofh{ overflow:hidden;}
+.rb{background-color:#666;color:#fff;height:30px;line-height:30px;border-radius:15px; cursor:pointer;}
+/*常用*/
+
+/*后台提示框*/
+.alert{border:2px solid #B6B7BB; width:490px; height:170px; margin-top:50px;}
+.alertbg{position:absolute;width:490px; height:170px;background-color:#666;filter:alpha(Opacity=60);-moz-opacity:0.6;opacity: 0.6;*margin-left:-245px;}
+.alertmsg{position:absolute; width:490px; height:100px; text-align:center;margin-top:50px;*margin-left:-245px;}
+
+/*顶部横条*/
+.topbar{width:100%; height:30px; position:absolute; z-index:100;}
+.content{border:1px solid #000; background-color:#6699CC; position:fixed; width:100%; height:30px; color:#000000;}
+.loginstate{width:400px; height:18px; position:absolute;right:10px;top:5px; text-align:right;}
+/*顶部横条*/
+
+/*主体部分*/
+.body{position:absolute; top:30px;}
+.loginbody{position:absolute; background:url(./../pic/bg/login.jpg); width:100%; height:100%;}
+.logo{width:417px; height:45px; margin-top:50px;}
+/*主体部分*/
+
+/*菜单*/
+.menu{width:200px; height:600px; text-align:center; margin-top:30px; float:left;}
+/*菜单*/
+
+/*内容frame*/
+.contentframe{border:0px solid #B6B7BB; width:800px; height:600px; margin-left:100px; float:left;}
+/*内容frame*/
+
+/*div表格*/
+.stafflist{border-collapse:collapse;width:100%;}
+.stafflist tr{text-align:center;}
+.stafflist th,td{border:1px solid #606060;}
+.stafflist a:link, .stafflista:visited{color:#000; text-decoration:none;}
+.stafflist a:hover{text-decoration:underline;color:#C60;}
+/*div表格*/
+
+/*分页*/
+.pagination{ text-align:center; color:#999;}
+.pagination a,.pagination span{border:1px solid #ddd; display:inline-block; padding:5px 10px; margin-left:-1px; color:#000; background-color:#FFF;}
+.pagination .page-prev{-moz-border-radius: 3px 0 0 3px;-webkit-border-radius: 3px 0 0 3px;border-radius: 3px 0 0 3px}
+.pagination .page-next{-moz-border-radius: 0 3px 3px 0;-webkit-border-radius: 0 3px 3px 0;border-radius: 0 3px 3px 0}
+.pagination a.cur,.pagination span.cur{background-color:#2F81F0;color:#fff; font-weight:bold}
+.pagination a:link, .pagination a:visited{color:#333}
+/*分页*/
+
+.tips{margin-left:10px;}
+.retsl a:link, .retsl a:visited{color:#FFF;}
+.retsl a:hover{color:#903; text-decoration:underline}
+
+.scroll{overflow-y:scroll; width:816px;}
+
+.t-m{position:absolute; right:30px;}
+.t-m a:link{color:#FFF;}
+.t-m a:visited{color:#FFF;}

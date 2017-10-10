@@ -1,0 +1,25 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+        {/if $staffLimit>0 /}
+       	  {/include 'common/menu.html'/}
+        {//if/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">编辑部门</div>
+                <div class="jfcl">
+                    <form action="{/geturl 'main/updateteam' 'main'/}" method="post">
+            <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">部门名称</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" class="w130" autocomplete="off" value="{/$team['pos_name']/}" name="teamName"></div>
+            </div>
+        	
+            <div class="w400" align="center">
+                <input type="submit" value="提交" class="h30 w60"/>
+            </div>
+        </form>
+                    </div>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

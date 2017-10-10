@@ -1,0 +1,40 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">员工信息查看
+                </div>
+                <div class="xi_middle_right_z">
+             <table width="760">
+
+              <tr align="center" valign="middle">
+                <td width="89" height="36"><span class="bt">员工编号</span></td>
+                <td width="112" height="36"><span class="bt">员工姓名</span></td>
+                <td width="56" height="36"><span class="bt">性别</span></td>
+                <td width="130" height="36"><span class="bt">担任职务</span></td>
+                <td width="105" height="36"><span class="bt">员工当前积分</span></td>
+                <td width="240" height="36"><span class="bt">操作</span></td>
+              </tr>{/print_r($staffs)/};
+              {/for $i=0,$j=count($staffs); $i<$j; $i++/}
+              	  {/$staff = $staffs[$i]/}
+                  <tr align="center" valign="middle">
+                    <td height="36"><span class="word02">{/$staff['staff_id']/}</span></td>
+                    <td height="36"><span class="word02">{/$staff['staff_name']/}</span></td>
+                    <td height="36"><span class="word02">{/if $staff['staff_sex'] == 0/}女{/else/}男{//if/}</span></td>
+                    <td height="36"><span class="word02">{/$staff['staff_level']/}</span></td>
+                    <td height="36"><span class="word02">{/$staff['score']/}</span></td>
+                    <td height="36"><span class="word02"><a href="{/geturl 'main/editstaff' 'main'/}?sid={/$staff['staff_id']/}">编辑</a>|<a href="{/geturl 'main/scoreinfo' 'main'/}?sid={/$staff['staff_id']/}">积分详情</a>|<a>删除</a></span></td>
+                  </tr>
+              {//for/}
+            </table>
+
+            </div>
+            <div class="xi_bottom02"><a href="#">首页</a> <a href="#">上一页</a> <a href="#">下一页</a> <a href="#">末页</a> 共3页 第1页
+            </div>
+          </div>
+        </div>
+
+{/include 'common/footer.html'/}

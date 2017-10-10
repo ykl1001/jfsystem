@@ -1,0 +1,63 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">积分编辑</div>
+                <form action="{/geturl 'main/upscore' 'main'/}" method="post">
+            <div class="w400 left">
+                <div class="w130 textr left h30 vmiddle lineh30">积分代码</div>
+                <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" autocomplete="off" class="w60" name="score_code" value="{/$scoreDetail['score_code']/}"></div>
+            </div>
+        	
+            <div class="w500 left">
+                <div class="w130 textr left h30 vmiddle lineh30">积分类型</div>
+                <div class="w370 textl left h30 vmiddle lineh30">：<select name="score_class[]" class="w110 ofh" id="scoreclass">
+                		<option value="0">请选择</option>
+                    	{/for $i=0,$j=count($scoreTypes); $i<$j; $i++/}
+                        	{/$type = $scoreTypes[$i]/}
+                            <option {/if $type['class_id']==$scoreDetail['class_id']/}selected="selected"{//if/} value="{/$type['class_id']/}">{/$type['class_name']/}</option>
+                        {//for/}
+                    </select>
+                    {/if $classes > 0/}
+                    	<select name="score_class[]" class="w110 ofh" id="c2">
+                            <option value="0">请选择</option>
+                            {/for $i=0,$j=count($classes); $i<$j; $i++/}
+                                {/$class = $classes[$i]/}
+                                <option {/if $class['class_id']==$cid/}selected="selected"{//if/} value="{/$class['class_id']/}">{/$class['class_name']/}</option>
+                            {//for/}
+                        </select>
+                    {//if/}
+                </div>
+            </div>
+            
+            <div class="w500 left">
+                <div class="w130 textr left h30 vmiddle lineh30">加、减分方式</div>
+                <div class="w370 textl left h30 vmiddle lineh30">：<input type="radio" name="type" value="1" {/if $scoreDetail['type']==1/}checked{//if/}>固定分值 
+                    <input type="radio" name="type" value="2" {/if $scoreDetail['type']==2/}checked{//if/}>浮动分数段 
+                    <input type="radio" name="type" value="3" {/if $scoreDetail['type']==3/}checked{//if/}>每月加分
+                </div>
+            </div>
+            
+            <div class="w500 left">
+                <div class="w130 textr left h30 vmiddle lineh30">分值</div>
+                <div class="w270 textl left h30 vmiddle lineh30 {/if $scoreDetail['type']==2/}hidden{//if/}" id="type1">：<input type="text" class="w30" autocomplete="off" name="score" value="{/$scoreDetail['score']/}"> 扣分请用负数</div>
+                <div class="w370 textl left h30 vmiddle lineh30 {/if $scoreDetail['type']!=2/}hidden{//if/}" id="type2">：最小 <input type="text" class="w30" autocomplete="off" name="min_score" value="{/$scoreDetail['score']/}"> -
+                最大 <input type="text" class="w30" autocomplete="off" name="scoreMax" value="{/$scoreDetail['score_max']/}"> 扣分请用负数</div>
+            </div>
+            <div class="w500 left">
+                <div class="w130 textr left h30 vmiddle lineh30">积分原因</div>
+                <div class="w370 textl left h30 vmiddle lineh30">：<input name="detail" autocomplete="off" type="text" class="w330" value="{/$scoreDetail['detail']/}"></div>
+            </div>
+            
+            <div class="w400 left" align="center">
+                <input type="submit" value="提交" class="h30 w60"/>
+            </div>
+            </div>
+         
+        </form>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

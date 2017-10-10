@@ -1,0 +1,106 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">积分项目查看</div>
+                <div class="jfcl">
+                	<div class="jfcl_kj">
+                    <form action="{/geturl 'main/updatestaff' 'main'/}" method="post">
+                   	  <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-top:22px;
+                                    margin-left:59px;">
+                       	<div class="word05">员工姓名：
+                        </div>
+                        <input class="wbk03" type="text" name="staffName" value="{/$staff['staff_name']/}"/>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工性别：
+                        </div>
+                       	  <label for="select"></label>
+                       	  <select class="wbk04" name="sex" id="select">
+                          	<option {/if $staff['staff_sex']==0/}selected="selected"{//if/} value="0">女</option>
+                        <option {/if $staff['staff_sex']==1/}selected="selected"{//if/} value="1">男</option>
+                   	      </select>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">入职时间：
+                        </div>
+                       	  <input type="text" class="wbk03" name="joinymd" value="{/$staff['joinymd']/}" onclick="WdatePicker()" autocomplete="off"/>
+                        </div>
+                        <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">初始积分：
+                        </div>
+                        <input class="wbk05" type="text" value="{/$staff['score']/}" name="score" value="200"/>
+                        </div>
+                        <div style="width:370px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工职务：
+                        </div>
+                            <select name="steam" id="steam" style="width:110px;">
+                                <option value="0">请选择</option>
+                                {/for $i=0,$j=count($teams); $i < $j; $i++/}
+                                    {/$team = $teams[$i]/}
+                                    <option {/if $staff['staff_department']==$team['pos_id']/} selected{//if/} value="{/$team['pos_id']/}">
+                                    	{/$team['pos_name']/}
+                                    </option>
+                                {//for/}
+                            </select>
+                             职位：
+                            <select name="spos" id="spos" style="width:100px;">
+                                <option value="0">请选择</option>
+                                {/for $i=0,$j=count($poses); $i < $j; $i++/}
+                                    {/$pos = $poses[$i]/}
+                                    <option {/if $pos['pos_id']==$staff['staff_position']/} selected{//if/} value="{/$pos['pos_id']/}">{/$pos['pos_name']/}</option>
+                                {//for/}
+                            </select>
+                        </div>
+                      <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工权限：
+                        </div>
+                       	  <label for="select2"></label>
+                       	  <select class="wbk04" name="staffLimit" id="select2">
+                          	<option {/if $staff['staff_limit']==0/}selected="selected"{//if/} value="0">普通</option>
+                        	<option {/if $staff['staff_limit']==1/}selected="selected"{//if/} value="1">管理员</option>
+                   	      </select>
+                          等级:
+                            <select name="posLevel" id="spos">
+                                <option {/if $staff['pos_level']==1/}selected{//if/} value="1">高层</option>
+                                <option {/if $staff['pos_level']==2/}selected{//if/} value="2">中层</option>
+                                <option {/if $staff['pos_level']==3/}selected{//if/} value="3">普通</option>
+                            </select>
+                        </div>
+                        <div style="width:315px; 
+                                    height:28px; 
+                                    float:left; 
+                                    margin-left:59px;">
+                       	<div class="word05">员工密码：
+                        </div>
+                        <input class="wbk03" type="text" name="password" />
+                        </div>
+                   	  <div class="tj01"><img src="{/getpicurl 'tj' 'png' 'bg'/}" width="126" height="32" />
+                        </div>
+                      </form>
+                    </div>
+                </div>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

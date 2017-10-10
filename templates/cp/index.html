@@ -1,0 +1,15 @@
+{/include 'common/header.html'/}
+<div class="body">
+
+	<div class="menu">
+		<div class="mt10"><input class="w130 h60" type="button" name="limit" value="员工数据登录" url="{/geturl 'main/addstaff' 'main'/}"></div>
+        <div class="mt10"><input class="w130 h60" type="button" name="limit" value="员工数据查看" url="{/geturl 'main/stafflist' 'main'/}"></div>
+        <div class="mt10"><input class="w130 h60" type="button" name="limit" value="加分/减分" url="{/geturl 'main/score' 'main'/}"></div>
+        <div class="mt10"><input class="w130 h60" type="button" name="limit" value="加分/减分项目编辑" url="{/geturl 'main/scorelist' 'main'/}"></div>
+        <div class="mt10"><input class="w130 h60" type="button" name="limit" value="积分类型编辑" url="{/geturl 'main/scoreclasslist' 'main'/}"></div>
+    </div>
+	<div class="contentframe">
+    	<iframe id="showframe"></iframe>
+    </div>
+</div>
+{/include 'common/footer.html'/}

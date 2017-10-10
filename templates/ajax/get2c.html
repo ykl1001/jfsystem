@@ -1,0 +1,9 @@
+{/if count($classes)>0/}
+ <select name="score_class[]" id="c2" class="w110 ofh">
+    <option value="0">请选择</option>
+    {/for $i=0,$j=count($classes); $i<$j; $i++/}
+        {/$class = $classes[$i]/}
+        <option value="{/$class['class_id']/}">{/$class['class_name']/}</option>
+    {//for/}
+</select>
+{//if/}

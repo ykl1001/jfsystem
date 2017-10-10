@@ -1,0 +1,49 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">项目编辑</div>
+                <div class="xi_middle_right_z">
+                	<div class="tj">
+                    	<div class="tj_an02"><a href="{/geturl 'main/newclass' 'main'/}"><img src="{/getpicurl 'tj_an02_03' 'jpg' 'bg'/}" width="127" height="26" /></a></div>
+                    </div>
+                    <div class="xik">
+                    <table width="760">
+
+                      <tr align="center" valign="middle">
+                        <td width="191" height="36"><span class="bt">积分类型编号</span></td>
+                        <td width="429" height="36"><span class="bt">类型名称</span></td>
+                        <td width="124" height="36"><span class="bt">操作</span></td>
+                      </tr>
+                      {/$j = count($classes)/}
+                {/if $j > 0/}
+                    {/for $i=0; $i<$j; $i++/}
+                      {/$class = $classes[$i]/}
+                      <tr align="center" valign="middle">
+                        <td height="36"><span class="word02">{/$class['class_id']/}</span></td>
+                        <td height="36"><span class="word02">{/$class['class_name']/}</span></td>
+                        <td height="36"><span class="word02"><a name="limit" href="{/geturl 'main/editclass' 'main'/}?cid={/$class['class_id']/}">编辑</a>|<a name="del" href="{/geturl 'main/delclass' 'main'/}?cid={/$class['class_id']/}">删除</a></span></td>
+                      </tr>
+                    {//for/}
+                    
+				{/else/}
+                    <tr>
+                        <td colspan="3"><span class="word02">还没有积分类型请添加</span></td>
+                    </tr>
+                {//if/}
+           			</table>
+                    </div>
+            </div>
+            <div class="xi_bottom02">{/if $pagebar/}{/$pagebar/}{//if/}
+            </div>
+          </div>
+        </div>
+        <div class="xi_bottom">版权所有：贵州智慧云尚科技有限公司 电话：0851-85378999
+        </div>
+    </div>
+</div>
+</body>
+</html>

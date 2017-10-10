@@ -1,0 +1,12 @@
+{/if $totalPage > 1/}
+<div class="xi_bottom02">
+    <div class="pagination">
+        {/if $curPage > 1/}<a href="{/$curLink/}?p={/$curPage-1/}{/$getPath/}" class="page-prev">&lt;&lt;</a>{//if/}
+        {/for $i=0,$j=$totalPage; $i<$j; $i++/}
+            <a href="{/$curLink/}?p={/$i+1/}{/$getPath/}" {/if $curPage==($i+1)/}class="cur"{//if/}>{/$i+1/}</a>
+        {//for/}
+        {/if $curPage < $totalPage/}<a class="page-next" href="{/$curLink/}?p={/$curPage+1/}{/$getPath/}">&gt;&gt;</a>{//if/}
+    </div>
+</div>
+{//if/}
+           

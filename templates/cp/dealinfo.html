@@ -1,0 +1,62 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">扣分情况查看
+                </div>
+                <div class="xi_middle_right_z">
+             <table class="fl" style="float:left;">
+			 	<tr>
+                	<td colspan="8" height="36" valign="middle">
+                        <form action="{/geturl 'main/dealinfo' 'main'/}" method="get">
+                            <div class="left ml5">
+                            	从<input class="w80" type="text" onclick="WdatePicker()" autocomplete="off" value="{/$strt/}" name="strt">至<input value="{/$endt/}" class="w80" onclick="WdatePicker()" type="text" autocomplete="off" name="endt">时间段&nbsp;&nbsp;
+                            
+     
+                                查看
+                                <input type="hidden" name="e" value="{/$e/}">
+                                <input class="ml5" type="submit" value="查询"/>
+                           </div>
+                        </form>
+                    </td>
+               </tr>
+              <tr align="center" valign="middle">
+                <td width="89" height="36"><span class="bt">处理人姓名</span></td>
+                <td width="112" height="36"><span class="bt">本月总加分</span></td>
+              </tr>
+              {/$j=count($plus)/}
+              {/if $j>0/}
+                  {/for $i=0; $i<$j; $i++/}
+                      {/$p = $plus[$i]/}
+                      <tr align="center" valign="middle">
+                        <td height="36"><span class="word02">{/$p['deal_staff']/}</span></td>
+                        <td height="36"><span class="word02">{/$p['score']/}</span></td>
+                      </tr>
+                  {//for/}
+              {//if/}
+            </table>
+			<table width="" style="float:left;">
+              <tr align="center" valign="middle">
+                <td width="89" height="36"><span class="bt">处理人姓名</span></td>
+                <td width="100" height="36"><span class="bt">本月总扣分</span></td>
+              </tr>
+              {/$j=count($sub)/}
+              {/if $j>0/}
+                  {/for $i=0; $i<$j; $i++/}
+                      {/$s = $sub[$i]/}
+                      <tr align="center" valign="middle">
+                        <td height="36"><span class="word02">{/$s['deal_staff']/}</span></td>
+                        <td height="36"><span class="word02">{/$s['score']/}</span></td>
+                      </tr>
+                  {//for/}
+              {//if/}
+            </table>
+            </div>
+           {/if $pagebar/}{/$pagebar/}{//if/}
+          </div>
+        </div>
+
+{/include 'common/footer.html'/}

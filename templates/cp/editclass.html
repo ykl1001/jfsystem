@@ -1,0 +1,34 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">项目编辑</div>
+                <form action="{/geturl 'main/updateclass' 'main'/}" method="post">
+                    <input value="{/$class['class_id']/}" name="classId" type="hidden"/>
+                    <div class="w400">
+                        <div class="w130 textr left h30 vmiddle lineh30">父级名称</div>
+                        <div class="w270 textl left h30 vmiddle lineh30">：
+                            <select name="parentId">
+                                <option value="0">无</option>
+                                {/for $i=0,$j=count($classes); $i<$j; $i++/}
+                                    {/$cla = $classes[$i]/}
+                                    <option value="{/$cla['class_id']/}" {/if $class['parent_id']==$cla['class_id']/}selected{//if/}>{/$cla['class_name']/}</option>
+                                {//for/}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="w400">
+                        <div class="w130 textr left h30 vmiddle lineh30">类型名称</div>
+                        <div class="w270 textl left h30 vmiddle lineh30">：<input type="text" value="{/$class['class_name']/}" class="w130" autocomplete="off" name="className"></div>
+                    </div>
+                    
+                    <div class="w400" align="center">
+                        <input type="submit" value="提交" class="h30 w60"/>
+                    </div>
+                </form>
+          </div>
+        </div>
+{/include 'common/footer.html'/}

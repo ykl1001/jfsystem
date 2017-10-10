@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="{/getfile 'js' 'jquery-1.8.3.min'/}"></script>
+<script type="text/javascript" src="{/getfile 'js' 'base'/}"></script>
+<link type="text/css" href="{/getfile 'css' 'base'/}" rel="stylesheet">
+<meta charset="utf-8">
+<title>员工信息录入</title>
+</head>
+
+<body>
+	<div class="b1">
+    	<center>
+        	<font size="+3">积分详情</font>
+        </center>
+        {/if $staffLimit>0 /}
+            <div class="w400">
+                <div class="w400 textl left h30 vmiddle lineh30">
+                	<a href="{/geturl 'main/stafflist' 'main'/}">返回员工列表</a>
+                </div>
+            </div>
+        {//if/}
+        <div class="w400">
+            <div class="w130 textr left h30 vmiddle lineh30">姓名</div>
+            <div class="w270 textl left h30 vmiddle lineh30">：{/$staff['staff_name']/}</div>
+        </div>
+        
+        <div class="w400">
+            <div class="w130 textr left h30 vmiddle lineh30">性别</div>
+            <div class="w270 textl left h30 vmiddle lineh30">：{/if $staff['staff_sex']==0/}女{/else/}男{//if/}</div>
+        </div>
+        
+        <div class="w400">
+            <div class="w130 textr left h30 vmiddle lineh30">入职时间</div>
+            <div class="w270 textl left h30 vmiddle lineh30">：{/$staff['joinymd']/}</div>
+        </div>
+        
+         <div class="w400">
+            <div class="w130 textr left h30 vmiddle lineh30">当前积分</div>
+            <div class="w270 textl left h30 vmiddle lineh30">：{/$staff['score']/}</div>
+        </div>
+        
+        <div class="w400">
+            <div class="w130 textr left h30 vmiddle lineh30">职务</div>
+            <div class="w270 textl left h30 vmiddle lineh30">：{/$staff['staff_level']/}</div>
+        </div>
+        {/if $staffLimit == 0/}
+            <div class="w400">
+                <div class="w130 textr left h30 vmiddle lineh30">修改密码</div>
+                <div class="w270 textl left h30 vmiddle lineh30"></div>
+            </div>
+            <form action="{/geturl 'main/repassword' 'main'/}" method="post">
+                <div class="w400">
+                    <div class="w130 textr left h30 vmiddle lineh30">原密码</div>
+                    <div class="w270 textl left h30 vmiddle lineh30">：<input name="password" type="password" class="w130"/></div>
+                </div>
+                <div class="w400">
+                    <div class="w130 textr left h30 vmiddle lineh30">新密码</div>
+                    <div class="w270 textl left h30 vmiddle lineh30">：<input name="newpassword" type="password" class="w130"/></div>
+                </div>
+                <div class="w400">
+                    <div class="w130 textr left h30 vmiddle lineh30">确认密码</div>
+                    <div class="w270 textl left h30 vmiddle lineh30">：<input name="repassword" type="password" class="w130"/></div>
+                </div>
+                <div class="w400">
+                    <div class="w400 hmiddle left h30 vmiddle lineh30"><input type="submit" value="确认"/></div>
+                </div>
+            </form>
+        {//if/}
+        {/$scorelist = count($score)/}
+        {/if $scorelist > 0/}
+            <table class="stafflist">
+                <tr><th>详情</th>{/if $staffLimit>0/}<th>处理人</th>{//if/}<th>时间</th></tr>
+                {/for $i=0,$j=$scorelist; $i<$j; $i++/}
+                    {/$s = $score[$i]/}
+                    <tr>
+                        <td class="w500 textl">{/$s['deal_reason']/}</td>
+                        {/if $staffLimit>0/}<td>{/$s['deal_staff']/}</td>{//if/}
+                        <td>{/$s['dateymd']/}</td>
+                    </tr>
+                {//for/}
+                {/if $pagebar/}
+                    <tr>
+                        <td {/if $staffLimit>0/}colspan="3"{/else/}colspan="2"{//if/}>
+                            {/$pagebar/}
+                        </td>
+                    </tr>
+                {//if/}
+            </table>
+        {/else/}
+            <div class="w500">
+                <div class="w500 hmiddle left h30 vmiddle lineh30">暂无加/减分详情</div>
+            </div>
+        {//if/}
+    </div>
+</body>
+</html>
