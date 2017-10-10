@@ -1,5 +1,5 @@
-var limiturl = "http://www.jfsystem.com/a/main/main/checklimit";
-var rooturl = "http://www.jfsystem.com/a/main/main/";
+var limiturl = "http://www.ysjfsystem.com/main/main/checklimit";
+var rooturl = "http://www.ysjfsystem.com/main/main/";
 //var limiturl = "http://www.ccgjyc.com/sjjt/main/main/checklimit";
 //var rooturl = "http://www.ccgjyc.com/sjjt/main/main/";
 // JavaScript Document
