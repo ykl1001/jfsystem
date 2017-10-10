@@ -95,7 +95,7 @@ class SDb extends Db{
 	 **/
 	public function __construct($table_name="",$config=array()){
 		if(count($config) === 0){
-			$config = array('user'=>DBUSER, 'password'=>DBPASSWORD, 'database'=>DBNAME, 'charset'=>DBCHARSET);
+			$config = array('user'=>DBUSER, 'password'=>DBPASSWORD, 'database'=>DBNAME, 'charset'=>DBCHARSET, 'host'=>DBHOST);
 		}
 		if(!empty($table_name))$this->table_name = $table_name;
 		if(!empty($config))parent::init($config);
