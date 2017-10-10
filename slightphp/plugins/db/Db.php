@@ -337,8 +337,7 @@ class Db{
 
 	private function __query($sql){
 		//{{{
-		//SQL MODE 默认为DELETE，INSERT，REPLACE 或 UPDATE,不需要返回值
-		$sql_mode = 1;//1.更新模式 2.查询模式 3.插入模式
+		$sql_mode = 1;
 
 		if(stripos($sql,"INSERT")!==false){
 			$sql_mode = 3;
@@ -363,11 +362,11 @@ class Db{
 			if(!$result){
 				$this->error['code']=mysql_errno(Db::$_globals[$this->_key]);
 				$this->error['msg']=mysql_error(Db::$_globals[$this->_key]);
-			}elseif($sql_mode==2){//查询模式
+			}elseif($sql_mode==2){
 				$data=array();
 				while($row=mysql_fetch_array($result,MYSQL_ASSOC)){ $data[]=$row; }
 				return $data;
-			}elseif($sql_mode==3){//插入模式
+			}elseif($sql_mode==3){
 				return mysql_insert_id(Db::$_globals[$this->_key]);
 			}else{
 				return mysql_affected_rows(Db::$_globals[$this->_key]);
@@ -382,7 +381,7 @@ class Db{
 				$data=array();
 				while($row= $result->fetch_assoc()){$data[]=$row;};
 				return $data;
-			}elseif($sql_mode==3){//插入模式
+			}elseif($sql_mode==3){
 				return Db::$_globals[$this->_key]->insert_id;
 			}else{
 				return Db::$_globals[$this->_key]->affected_rows;
