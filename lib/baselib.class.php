@@ -295,11 +295,7 @@ class baselib extends STpl{
 	*/
 	function delallspe($str){
 		$str = trim($str);
-	    @$str = ereg_replace("\t","",$str);
-	    @$str = ereg_replace("\r\n","",$str);
-	    @$str = ereg_replace("\r","",$str);
-	    @$str = ereg_replace("\n","",$str);
-	    @$str = ereg_replace("    ","",$str);
+	    $str = preg_replace('/\s/',"",$str);
 	    return $str;
 	}
 }

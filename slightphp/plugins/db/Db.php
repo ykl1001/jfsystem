@@ -22,7 +22,7 @@ class Db{
 	/**
 	 * 
 	 */
-	private $engine="mysql";
+	private $engine="mysqli";
 	private $_allow_engines=array(
 			"mysql","mysqli",
 			"pdo_mysql","pdo_sqlite","pdo_cubrid",

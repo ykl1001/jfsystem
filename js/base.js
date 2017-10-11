@@ -1,7 +1,5 @@
-var limiturl = "http://www.jfsystem.com/a/main/main/checklimit";
-var rooturl = "http://www.jfsystem.com/a/main/main/";
-//var limiturl = "http://www.ccgjyc.com/sjjt/main/main/checklimit";
-//var rooturl = "http://www.ccgjyc.com/sjjt/main/main/";
+var limiturl = "http://119.23.117.81/main/main/checklimit";
+var rooturl = "http://119.23.117.81/main/main/";
 // JavaScript Document
 $(document).ready(function () {
 	/*点击新增员工数据按钮*/

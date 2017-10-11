@@ -15,11 +15,12 @@ define('SUF', '');*/
 *数据库配置(线上)
 */
 define('DBNAME', 'jfxt');
-define('DBUSER', 'root');
-define('DBPASSWORD', '');
+define('DBUSER', 'jiemidb_w');
+define('DBPASSWORD', 'JieMei2016wesc');
+define('DBHOST', '192.168.100.226');
 define('DBCHARSET', 'UTF8');
-define('ROOTURL', 'http://www.jfsystem.com/a/');
-define('PICURL', 'http://www.jfsystem.com/a/pic/');
-define('UPLOADADDR', ROOT.'a/pic/');
+define('ROOTURL', 'http://119.23.117.81/');
+define('PICURL', 'http://119.23.117.81/pic/');
+define('UPLOADADDR', ROOT.'pic/');
 define('SUF', '_a');
 ?>
