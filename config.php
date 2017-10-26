@@ -1,6 +1,6 @@
 <?php
     error_reporting(E_ALL);
-	session_set_cookie_params(2592000,'/','.119.23.117.81',false,false);
+	session_set_cookie_params(2592000,'/','',false,false);
 	session_start();
 	date_default_timezone_set("Asia/Shanghai");
 	define("ROOT",				dirname(__FILE__).'/');
