@@ -1825,7 +1825,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $db = new SDb();
         $permission = array('rolename'=>$get['rolename']);
-        $permission['aid'] = $db->insert('permission_role','rolename="'.$get['rolename'].'"');
+        $permission['roleid'] = $db->insert('permission_role','rolename="'.$get['rolename'].'"');
         echo json_encode(array('status'=>1,'data'=>$permission));
         Tpl::getHtmlStr(false);
 
