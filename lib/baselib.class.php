@@ -16,12 +16,12 @@ class baselib extends STpl{
 		$arrCondition = array();
 		$arrCondition['staff_name'] = (string)$strStaffname;
 		$arrCondition['password'] = (string)md5($strPassword);
-		$strItems = 'staff_id,staff_name,staff_limit';
-		$arrResult = array();
+		$strItems = 'staff_id,staff_name,staff_limit,roleid';
 		if($arrResult = $dbStaff->selectOne('jf_staff'.SUF, $arrCondition, $strItems)){
 			$_SESSION['staff_id'] = $arrResult['staff_id'];
 			$_SESSION['staff_name'] = $arrResult['staff_name'];
 			$_SESSION['staffLimit'] = $arrResult['staff_limit'];
+            $_SESSION['roleid'] = $arrResult['roleid'];
 			return true;
 		} else {
 			return false;

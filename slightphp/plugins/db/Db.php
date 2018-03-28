@@ -357,6 +357,7 @@ class Db{
 		if(defined("DEBUG")){
 			trigger_error("{$this->engine} ( $sql )");
 		}
+//		echo $sql,'<br>';
 		if($this->engine=="mysql"){
 			$result = mysql_query($sql,Db::$_globals[$this->_key]);
 			if(!$result){
