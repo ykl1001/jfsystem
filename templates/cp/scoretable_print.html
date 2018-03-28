@@ -1,0 +1,97 @@
+{/include 'common/header_print.html'/}
+	<div class="wk">
+        <div class="xi_middle">
+            <div class="xi_middle_right_top">
+                积分报表查看
+            </div>
+            <div class="xi_middle_right_z">
+                <table width="900">
+                    <tr>
+                        <td colspan="8" height="36" valign="middle">
+                            <form action="{/geturl 'main/scoretable' 'main'/}" method="get">
+                                <div class="left ml5">
+                                    从<input class="w80" type="text" onclick="WdatePicker()" autocomplete="off" value="{/$strt/}" name="strt">至<input value="{/$endt/}" class="w80" onclick="WdatePicker()" type="text" autocomplete="off" name="endt">时间段&nbsp;&nbsp;
+                                    部门：
+                                    <select name="st">
+                                        <option value="0">所有部门</option>
+                                        {/$j = count($departments)/}
+                                        {/for $i=0; $i<$j; $i++/}
+                                        {/$dep = $departments[$i]/}
+                                        <option value="{/$dep['pos_id']/}" {/if $dep['pos_id']==$st/}selected{//if/}>{/$dep['pos_name']/}</option>
+                                        {//for/}
+                                    </select>
+
+                                    等级：
+                                    <select name="pl">
+                                        <option value="0">请选择</option>
+                                        <option {/if $pl==1/}selected{//if/} value="1">高层</option>
+                                        <option {/if $pl==2/}selected{//if/} value="2">中层</option>
+                                        <option {/if $pl==3/}selected{//if/} value="3">普通</option>
+                                    </select>
+
+                                    职位：
+                                    <select name="spos">
+                                        <option value="0">所有职位</option>
+                                        {/$j = count($sposes)/}
+                                        {/for $i=0; $i<$j; $i++/}
+                                        {/$s = $sposes[$i]/}
+                                        <option {/if $spos==$s['pos_id']/}selected{//if/} value="{/$s['pos_id']/}">{/$s['pos_name']/}</option>
+                                        {//for/}
+                                    </select><br/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;合计积分
+                                    <select name="sort">
+                                        <option {/if $sort==1/}selected{//if/} value="1">降序</option>
+                                        <option {/if $sort==2/}selected{//if/} value="2">升序</option>
+                                    </select>
+                                    查看
+
+                                    性别
+                                    <select name="sex">
+                                        <option value="-1">不限</option>
+                                        <option {/if $sex==0/}selected{//if/} value="0">女</option>
+                                        <option {/if $sex==1/}selected{//if/} value="1">男</option>
+                                    </select>
+                                    <input class="ml5" type="submit" value="查询"/>
+                                    <a href="{/geturl 'main/dealinfo' 'main'/}">查看处理人</a>
+                                    <a href="{/geturl 'main/scoretable' 'main'/}?{/$queryStr/}&doprint=1" target="_blank">打印</a>
+                                </div>
+                            </form>
+
+                        </td>
+                    </tr>
+                    <tr align="center" valign="middle">
+                        <td width="45"><span class="bt">排名</span></td>
+                        <td width="89" height="36"><span class="bt">员工编号</span></td>
+                        <td width="112" height="36"><span class="bt">员工姓名</span></td>
+                        <td width="56" height="36"><span class="bt">性别</span></td>
+                        <td width="130" height="36"><span class="bt">担任职务</span></td>
+                        <td width="60" height="36"><span class="bt">加分</span></td>
+                        <td width="60" height="36"><span class="bt">减分</span></td>
+                        <td width="80" height="36"><span class="bt">合计</span></td>
+                    </tr>
+                    {/$j=count($staffs)/}
+                    {/$r = $rank/}
+                    {/if $j > 0/}
+                    {/for $i=0; $i<$j; $i++/}
+                    {/$staff = $staffs[$i]/}
+                    <tr align="center" valign="middle">
+                        <td height="36"><span class="word02">{/$r++/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_id']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_name']/}</span></td>
+                        <td height="36"><span class="word02">{/if $staff['staff_sex'] == 0/}女{/else/}男{//if/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['staff_level']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['add']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['sub']/}</span></td>
+                        <td height="36"><span class="word02">{/$staff['total']/}</span></td>
+                    </tr>
+                    {//for/}
+                    {/else/}
+                    <td colspan="9" align="center" height="36"><span class="word02">该时段无积分处理记录</span></td>
+                    {//if/}
+                </table>
+
+            </div>
+            {/if $pagebar/}{/$pagebar/}{//if/}
+        </div>
+
+{/include 'common/footer_print.html'/}

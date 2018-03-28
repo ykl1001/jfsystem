@@ -1,24 +1,41 @@
 <div class="xi_middle_left">
+    {/if $staffLimit == 255/}
     <div class="xi_middle_left_anniu">
-        <a href="{/geturl 'main/addstaff' 'main'/}"><img src="{/getpicurl 'anniu01_03' 'jpg' 'bg'/}" width="169" height="43" /></a>
+        <!--<a href="{/geturl 'main/addstaff' 'main'/}"><img src="{/getpicurl 'anniu01_03' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/addstaff' 'main'/}" class="btn btn-default btn-lg btn-block">员工数据录入</a>
     </div>
     <div class="xi_middle_left_anniu">
-        <a href="{/geturl 'main/scoretable' 'main'/}"><img src="{/getpicurl 'btn_jfbb' 'jpg' 'bg'/}" width="169" height="43" /></a>
+        <!--<a href="{/geturl 'main/scoretable' 'main'/}"><img src="{/getpicurl 'btn_jfbb' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/scoretable' 'main'/}" class="btn btn-default btn-lg btn-block">积分报表查看</a>
     </div>
     <div class="xi_middle_left_anniu">
-    	<a href="{/geturl 'main/stafflist' 'main'/}"><img src="{/getpicurl 'anniu02_03' 'jpg' 'bg'/}" width="169" height="43" /></a>
+    	<!--<a href="{/geturl 'main/stafflist' 'main'/}"><img src="{/getpicurl 'anniu02_03' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/stafflist' 'main'/}" class="btn btn-default btn-lg btn-block">员工数据查看</a>
     </div>
     <div class="xi_middle_left_anniu">
-    	<a href="{/geturl 'main/score' 'main'/}"><img src="{/getpicurl 'annniu03_03' 'jpg' 'bg'/}" width="169" height="43" /></a>
+    	<!--<a href="{/geturl 'main/score' 'main'/}"><img src="{/getpicurl 'annniu03_03' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/score' 'main'/}" class="btn btn-default btn-lg btn-block">加分/减分</a>
     </div>
     <div class="xi_middle_left_anniu">
-        <a href="{/geturl 'main/scoreclasslist' 'main'/}"><img src="{/getpicurl 'annniu04_03' 'jpg' 'bg'/}" width="169" height="43" /></a>
+        <!--<a href="{/geturl 'main/scoreclasslist' 'main'/}"><img src="{/getpicurl 'annniu04_03' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/scoreclasslist' 'main'/}" class="btn btn-default btn-lg btn-block">项目编辑</a>
     </div>
     <div class="xi_middle_left_anniu">
-        <a href="{/geturl 'main/scorelist' 'main'/}"><img src="{/getpicurl 'annniu05_03' 'jpg' 'bg'/}" width="169" height="43" /></a>
+        <!--<a href="{/geturl 'main/scorelist' 'main'/}"><img src="{/getpicurl 'annniu05_03' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/scorelist' 'main'/}" class="btn btn-default btn-lg btn-block">积分类型编辑</a>
     </div>
     <div class="xi_middle_left_anniu">
-        <a href="{/geturl 'main/teamabout' 'main'/}"><img src="{/getpicurl 'team' 'jpg' 'bg'/}" width="169" height="43" /></a>
+        <!--<a href="{/geturl 'main/teamabout' 'main'/}"><img src="{/getpicurl 'team' 'jpg' 'bg'/}" width="169" height="43" /></a>-->
+        <a href="{/geturl 'main/teamabout' 'main'/}" class="btn btn-default btn-lg btn-block">部门编辑</a>
+    </div>
+    <div class="xi_middle_left_anniu">
+        <a href="{/geturl 'main/import' 'main'/}" class="btn btn-default btn-lg btn-block">导入/导出</a>
+    </div>
+    <div class="xi_middle_left_anniu">
+        <a href="{/geturl 'main/scorerank' 'main'/}" class="btn btn-default btn-lg btn-block">分类排行</a>
+    </div>
+    <div class="xi_middle_left_anniu">
+        <a href="{/geturl 'main/permission' 'main'/}" class="btn btn-default btn-lg btn-block">权限管理</a>
     </div>
     <div class="xi_middle_left_ss">
     	<form name="searchkey" action="{/geturl 'main/search' 'main'/}" method="get">
@@ -28,4 +45,11 @@
             </div>
         </form>
     </div>
+    {/else/}
+    {/foreach($menu_list as $u_menu)/}
+    <div class="xi_middle_left_anniu">
+        <a href="/{/$u_menu['url']/}" class="btn btn-default btn-lg btn-block">{/$u_menu['name']/}</a>
+    </div>
+    {//foreach/}
+    {//if/}
 </div>

@@ -10,7 +10,7 @@
                 	<div class="jfcl_kj">
                     <form action="{/geturl 'main/savestaff' 'main'/}" method="post">
                    	  <div style="width:315px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-top:22px;
                                     margin-left:59px;">
@@ -19,7 +19,7 @@
                         <input class="wbk03" type="text" name="staffName"/>
                         </div>
                       <div style="width:315px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">员工性别：
@@ -31,7 +31,7 @@
                    	      </select>
                         </div>
                       <div style="width:315px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">入职时间：
@@ -39,7 +39,7 @@
                        	  <input type="text" class="wbk03" name="joinymd" onclick="WdatePicker()" autocomplete="off"/>
                         </div>
                         <div style="width:315px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">初始积分：
@@ -47,7 +47,7 @@
                         <input class="wbk05" type="text" name="score" value="200"/>
                         </div>
                         <div style="width:370px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">员工职务：
@@ -65,7 +65,7 @@
                             </select>
                         </div>
                       <div style="width:315px; 
-                                    height:28px; 
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">员工权限：
@@ -82,8 +82,21 @@
                                 <option value="3" selected>普通</option>
                             </select>
                         </div>
-                        <div style="width:315px; 
-                                    height:28px; 
+                        <div style="width:315px;
+                                    height:24px;
+                                    float:left;
+                                    margin-left:59px;display: none;" id="roleid_div">
+                            <div class="word05">角色：
+                            </div>
+                            <label for="roleid"></label>
+                            <select class="wbk04" name="roleid" id="roleid" style="width:100px;">
+                                {/foreach($roles as $role)/}
+                                <option value="{/$role['roleid']/}" {/if $role['roleid']==$param_roleid/}selected{//if/}>{/$role['rolename']/}</option>
+                                {//foreach/}
+                            </select>
+                        </div>
+                        <div style="width:315px;
+                                    height:24px;
                                     float:left; 
                                     margin-left:59px;">
                        	<div class="word05">员工密码：

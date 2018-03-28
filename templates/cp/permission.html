@@ -1,0 +1,426 @@
+{/include 'common/header.html'/}
+<style>
+    .leftPanel{
+        float: left;
+        width: 80px;
+        height: 100%;
+
+
+    }
+    .leftPanel > div{
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .leftPanel > .onfours{
+        border: 1px solid red;
+        color: red
+    }
+
+    .rightPanel{
+        float: left;
+        width: calc(100% - 200px - 50px);
+        height: 100%;
+        margin-left: 5px;
+    }
+    .fl{
+        float: left;
+    }
+
+    .node{
+        width: 100%;
+    }
+
+    .chrild{
+        width: calc(100% - 50px);
+        margin-left: 50px;
+    }
+
+    .console{
+        border-bottom: 1px solid red;
+    }
+    .console > *{
+        margin-bottom: 10px;
+    }
+
+    .tree{
+        margin-top: 30px;
+    }
+
+    .title > button{
+        width: 6em;
+        margin: 0 10px;
+    }
+    .title > .name{
+        width: 200px;
+        font-size: 14px;
+    }
+    .check_data_ok{
+        margin-right:10%;
+        float:right;
+    }
+</style>
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">
+                	权限管理
+                </div>
+                <div class="xi_middle_right_z">
+             <table width="100%">
+			 	<tr>
+                	<td height="36" valign="middle">
+                        <form action="" method="get">
+                            <div class="left ml5">
+                                角色：
+                                <select name="roleid" id="roleselect">
+                                    {/foreach($roles as $role)/}
+                                    	<option value="{/$role['roleid']/}" {/if $role['roleid']==$param_roleid/}selected{//if/}>{/$role['rolename']/}</option>
+                                    {//foreach/}
+                                </select>
+
+                                <input id="rolename" name="rolename" class="" type="text" placeholder="角色名" />
+                                <input class="ml5" type="button" value="添加角色" onclick="addrole()"/>
+                           </div>
+                        </form>
+                    </td>
+                </tr>
+                <tr valign="middle">
+                    <td>
+                        <div class="console">
+                            <span id="span_cnodename">一级节点</span>
+                            <input id="parentid" class="" type="text" placeholder="父id" />
+                            <input id="nodename" class="" type="text" placeholder="名字" />
+                            <input id="nodeurl" class="" type="text" placeholder="节点的url" />
+                            <button onclick="submit();">确认</button>
+                        </div>
+                        <div class="tree"></div>
+                    </td>
+                </tr>
+            </table>
+            </div>
+          </div>
+        </div>
+        <script>
+            var SvrUrl = "{/geturl 'main/' 'main'/}";
+            var chooseRoleId=1,chooseNodeId,nodeid=101;
+            var type = 'add';
+
+            //左侧角色切换
+            $('select[name="roleid"]').change(function(e){
+                chooseRoleId = this.options[this.selectedIndex].value;
+                loadpermission(chooseRoleId);
+            })
+
+            function loadpermission(roleid) {
+                //获取服务器数据成功后调用
+                AjaxSend('getpermission',"GET",{'parent_id':0,'roleid':roleid},function(rlt){
+                    var TreeData = rlt.data;
+                    $('.tree').html('');
+                    ShowLocalTree('.tree', TreeData);
+                },function(rlt){
+                    alert(rlt.msg);
+                });
+            }
+            loadpermission(chooseRoleId);
+
+            //读取服务器树形结构
+            function ShowLocalTree(tree_obj_seek, TreeData){
+                if($(tree_obj_seek).html() != '') return false;
+                for (var i = 0; i < TreeData.length; i++) {
+                    var div1 = $('<div></div>');
+                    div1.attr('class','node');
+                    div1.attr('id','tree_'+TreeData[i].aid);
+                    var p1 = $('<p></p>');
+                    p1.attr('class','title');
+                    var btn1 = $("<input class='jj' style='width:2em' type='button' id='node"+TreeData[i].aid+"_btn1' value='+'>");
+                    p1.append(btn1);
+                    var span1 = $('<span></span>');
+                    span1.attr('class','name');
+                    span1.html(TreeData[i].aid+'.'+TreeData[i].name);
+                    p1.append(span1);
+                    var btn2 = $("<input type='button' id='node"+TreeData[i].aid+"_btn2' value='添加子集'>");
+                    p1.append(btn2);
+                    var btn3 = $("<input type='button' id='node"+TreeData[i].aid+"_btn3' value='修改'>");
+                    p1.append(btn3);
+                    var btn4 = $("<input type='button' id='node"+TreeData[i].aid+"_btn4' value='删除'>");
+                    p1.append(btn4);
+                    var checkobj = $("<input type='checkbox' class='check_data_ok' id='checkbox_"+TreeData[i].aid+"' value='"+TreeData[i].aid+"'>");
+                    if(TreeData[i].ishave)
+                    {
+                        checkobj.attr('checked', true);
+                    }
+                    p1.append(checkobj);
+                    div1.append(p1);
+                    var p2 = $('<p></p>');
+                    p2.attr('class','pc');
+                    var div2 = $('<div hidden></div>');
+                    div2.attr('isshow','0');
+                    div2.attr('class','chrild');
+                    p2.append(div2);
+                    div1.append(p2);
+                    $(tree_obj_seek).append(div1);
+                    addBtnShowChlirdEvent(TreeData[i].aid);
+                    addBtnaddchlirdEvent(TreeData[i].aid,TreeData[i].name);
+                    addBtneditchlirdEvent(TreeData[i].aid,TreeData[i].name,TreeData[i].url,TreeData[i].parent_id);
+                    addBtndelchlirdEvent(TreeData[i].aid);
+                    addBtnChangePermissionMap(TreeData[i].aid);
+                    if(TreeData[i].children != null)
+                    {
+                        ShowLocalTree(div2,TreeData[i].children);
+                        div2.show();
+                        div2.attr('isshow',1);
+                        var btn_text = btn1.val();
+                        if(btn_text=="+"){
+                            btn1.val("-");
+                        }else{
+                            btn1.val("+");
+                        }
+                    }
+                    else
+                    {
+                        btn1.val('-');
+                    }
+                }
+
+            }
+
+            //显示下级菜单
+            function addBtnShowChlirdEvent(id){
+                //+-号
+                $("#node"+id+"_btn1").bind("click",function(){
+                    var childPanel = $('#tree_'+id).children('.pc').children('.chrild');
+                    var btn = $('#tree_'+id).children('.title').children('.jj');
+                    var isshow = childPanel.attr('isshow');
+                    if(isshow=="1"){
+                        childPanel.hide();
+                        childPanel.attr('isshow',0);
+                    }else{
+                        var parentid = this.id.slice(4,-5);
+                        AjaxSend('getpermission',"GET",{'parent_id':parentid,'roleid':chooseRoleId},function(rlt){
+                            var ChildTreeData = rlt.data;
+                            ShowLocalTree(childPanel, ChildTreeData);
+                        },function(rlt){
+                            alert(rlt.msg);
+                        });
+                        childPanel.show();
+                        childPanel.attr('isshow',1);
+                    }
+                    var btn_text = btn.val();
+                    if(btn_text=="+"){
+                        btn.val("-");
+                    }else{
+                        btn.val("+");
+                    }
+                });
+            }
+
+            function addBtnaddchlirdEvent(id,name){
+                $("#node"+id+"_btn2").bind("click",function(){
+                    chooseNodeId = id;
+                    type = 'add';
+                    $('#span_cnodename').html('当前选中节点:'+name);
+                    $('#parentid').val(chooseNodeId);
+                });
+            }
+
+            function addBtneditchlirdEvent(id,nodename,nodeurl,parent_id){
+                $("#node"+id+"_btn3").bind("click",function(){
+                    chooseNodeId = id;
+                    type = 'edit';
+                    $('#nodename').val(nodename);
+                    $('#nodeurl').val(nodeurl);
+                    $('#parentid').val(parent_id);
+                });
+            }
+
+            function addBtndelchlirdEvent(id){
+                $("#node"+id+"_btn4").bind("click",function(){
+
+                    if(!confirm('确认删除？'))
+                    {
+                        return false;
+                    }
+                    var post_data = {'aid':id};
+                    //提交后台删除
+                    AjaxSend('deletepermission',"GET",post_data,function(rlt){
+                        $('#tree_'+id).remove();
+                    },function(rlt){
+                        alert(rlt.msg);
+                    });
+                    //提交后台删除
+                });
+            }
+            function addBtnChangePermissionMap(id) {
+                $("#checkbox_"+id).bind("click",function(){
+                    saveuserpermission();
+                });
+            }
+            function submit(){
+                if(type=='add'){
+                    add();
+                }else{
+                    edit();
+                }
+            }
+
+            function edit(){
+                var nodename,nodeurl,parent_id;
+                nodename  = $('#nodename').val();
+                nodeurl  = $('#nodeurl').val();
+                parent_id  = $('#parentid').val();
+                if(nodename=='' || nodeurl==''){
+//                    alert('请输入正确的数据！');
+//                    return;
+                }
+                var post_data = {'aid':chooseNodeId,'name':nodename,'url':nodeurl,'parent_id':parent_id};
+                //调用数据库成功后调用
+                AjaxSend('editpermission',"GET",post_data,function(rlt){
+                    local_node_edit(nodename);
+                },function(rlt){
+                    alert(rlt.msg);
+                });
+            }
+
+            function local_node_edit(nodename){
+                $('tree_'+chooseNodeId).children('.title').children('.name').html(nodename);
+            }
+
+            function add(){
+                var nodename,nodeurl;
+                nodename  = $('#nodename').val();
+                nodeurl  = $('#nodeurl').val();
+                if(nodename=='' || nodeurl==''){
+                    //alert('请输入正确的数据！');
+                    //return;
+                }
+                chooseNodeId = $('#parentid').val();
+                var post_data = {'aid':nodeid,'name':nodename,'url':nodeurl,'parent_id':chooseNodeId};
+                //调用数据库成功后调用
+                AjaxSend('addpermission',"GET",post_data,function(rlt){
+                    nodeid = rlt.data.aid;
+                    chooseNodeId = rlt.data.parent_id;
+                    local_node_add(nodename,nodeurl,chooseNodeId);
+                },function(rlt){
+                    alert(rlt.msg);
+                });
+            }
+
+
+            function local_node_add(nodename,nodeurl,parent_id){
+                var div1 = $('<div></div>');
+                div1.attr('class','node');
+                div1.attr('id','tree_'+nodeid);
+
+                var p1 = $('<p></p>');
+                p1.attr('class','title');
+
+
+                var btn1 = $("<input class='jj' style='width:2em' type='button' id='node"+nodeid+"_btn1' value='+'>");
+                p1.append(btn1);
+
+                var span1 = $('<span></span>');
+                span1.attr('class','name');
+                span1.html(nodeid+'.'+nodename);
+                p1.append(span1);
+
+                var btn2 = $("<input type='button' id='node"+nodeid+"_btn2' value='添加子集'>");
+                p1.append(btn2);
+
+
+
+                var btn3 = $("<input type='button' id='node"+nodeid+"_btn3' value='修改'>");
+                p1.append(btn3);
+
+
+                var btn4 = $("<input type='button' id='node"+nodeid+"_btn4' value='删除'>");
+                p1.append(btn4);
+
+                div1.append(p1);
+
+
+                var p2 = $('<p></p>');
+                p2.attr('class','pc');
+
+                var div2 = $('<div hidden></div>');
+                div2.attr('isshow','0');
+                div2.attr('class','chrild');
+                p2.append(div2);
+
+                div1.append(p2);
+
+                if(chooseNodeId > 0 )
+                {
+                    $('#tree_'+chooseNodeId).children('.pc').children('.chrild').append(div1);
+                    $('#tree_'+chooseNodeId).children('.pc').children('.chrild').show();
+                }else{
+                    $('.tree').prepend(div1);
+                }
+
+                addBtnShowChlirdEvent(nodeid);
+                addBtnaddchlirdEvent(nodeid,nodename);
+                addBtneditchlirdEvent(nodeid,nodename,nodeurl,parent_id);
+                addBtndelchlirdEvent(nodeid);
+            }
+
+
+
+            //---------------------------Svr封装-------
+            function AjaxSend(action,type,data,suc,err){
+                $.ajax({
+                    url: SvrUrl+action,
+                    dataType: 'json',
+                    type: type,
+                    data: data,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(data){
+                        if(parseInt(data.status) == 1)
+                            suc(data);
+                        else
+                            err(data);
+                    },
+                    error: function(data){
+                        err(data);
+                    }
+                });
+            }
+
+            function saveuserpermission()
+            {
+                var aid = new Array();
+                $('.check_data_ok').each(function(){
+                    if(this.checked == true)
+                    {
+                        aid.push(this.value);
+                    }
+                });
+                var post_data = {'aid':aid.join(','),'roleid':chooseRoleId};
+                //调用数据库成功后调用
+                AjaxSend('addrolepermission',"GET",post_data,function(rlt){
+//                    alert(rlt.msg);
+                },function(rlt){
+                    alert(rlt.msg);
+                });
+            }
+            function addrole(){
+                var rolename  = $('#rolename').val();
+                if(rolename==''){
+                    alert('请输入角色名！');
+                    return;
+                }
+                var post_data = {'rolename':rolename};
+                //调用数据库成功后调用
+                AjaxSend('addrole',"GET",post_data,function(rlt){
+                    var roleid = rlt.data.roleid;
+                    $('#roleselect').append('<option value="'+roleid+'">'+rolename+'</option>');
+                },function(rlt){
+                    alert(rlt.msg);
+                });
+            }
+        </script>
+{/include 'common/footer.html'/}

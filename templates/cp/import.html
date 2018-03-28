@@ -1,0 +1,28 @@
+{/include 'common/header.html'/}
+	<div class="wk">
+    	<div class="xi">
+        </div>
+        <div class="xi_middle">
+       	  {/include 'common/menu.html'/}
+          <div class="xi_middle_right">
+            	<div class="xi_middle_right_top">导入/导出</div>
+                <div class="xi_middle_right_z">
+                	<div class="tj">
+                        <form id="myform" action="{/geturl 'main/import' 'main'/}" method="post" enctype="multipart/form-data">
+                            <input type="file" name="uploadfile" style="">
+                            <a class="ba" href="javascript:submitform();"><div class="rb left hmiddle w110">导入</div></a>
+                        </form>
+                        <span style="float: left; margin: 0 80px 0 80px; line-height: 30px;">&nbsp;</span>
+                        <a class="ba" href="{/geturl 'main/import' 'main'/}?type=1"><div class="rb left hmiddle w110 ml5">导出</div></a>
+                    </div>
+            </div>
+            <div class="xi_bottom02">{/$pagebar/}
+            </div>
+          </div>
+        </div>
+<script type="text/javascript">
+    function submitform() {
+        document.getElementById("myform").submit();
+    }
+</script>
+{/include 'common/footer.html'/}

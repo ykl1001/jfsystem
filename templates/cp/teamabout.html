@@ -13,8 +13,33 @@
                         <a class="ba" href="{/geturl 'main/poslist' 'main'/}"><div class="rb left hmiddle w110 ml5">查看所有职位</div></a>
                         <a class="ba" href="{/geturl 'main/newpos' 'main'/}"><div class="rb left hmiddle w110 ml5">添加新职位</div></a>
                     </div>
-            </div>
-            <div class="xi_bottom02">{/$pagebar/}
+                    <div class="xik">
+                        <table width="760">
+
+                            <tr align="center" valign="middle">
+                                <td width="191" height="36"><span class="bt">部门编号</span></td>
+                                <td width="429" height="36"><span class="bt">部门名称</span></td>
+                                <td width="124" height="36"><span class="bt">操作</span></td>
+                            </tr>
+                            {/$j = count($teams)/}
+                            {/if $j > 0/}
+                            {/for $i=0; $i<$j; $i++/}
+                            {/$team = $teams[$i]/}
+                            <tr align="center" valign="middle">
+                                <td height="36"><span class="word02">{/$team['pos_id']/}</span></td>
+                                <td height="36"><span class="word02">{/$team['pos_name']/}</span></td>
+                                <td height="36"><span class="word02"><a name="limit" href="{/geturl 'main/editteam' 'main'/}?pid={/$team['pos_id']/}">编辑</a>|<a name="del" href="{/geturl 'main/delteam' 'main'/}?pid={/$team['pos_id']/}">删除</a></span></td>
+                            </tr>
+                            {//for/}
+
+                            {/else/}
+                            <tr>
+                                <td colspan="3" align="center"><span class="word02">还没有部门信息请添加</span></td>
+                            </tr>
+                            {//if/}
+                            {/if $pagebar/}<tr><td colspan="3" align="center">{/$pagebar/}</td></tr>{//if/}
+                        </table>
+                    </div>
             </div>
           </div>
         </div>

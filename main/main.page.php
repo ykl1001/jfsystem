@@ -5,7 +5,20 @@ class main_main extends baselib{
 	*初始化
 	*/
 	function __construct(){
-		$this->arrParamas = array();
+		$this->arrParamas = array('staffLimit'=>isset($_SESSION['staffLimit']) ? $_SESSION['staffLimit'] : 0);
+        $iStaffId = (int)$_SESSION['staff_id'];
+		if ($iStaffId && $_SESSION['staffLimit'] != 255) {
+		    // 获取用户菜单列表
+            $db = new SDb();
+            $aids_map = $db->select('permission_map',array('roleid'=>$_SESSION['roleid']), 'aid')->items;
+            $aids = array();
+            if ($aids_map) {
+                foreach ($aids_map as $aid_map) {
+                    $aids[] = $aid_map['aid'];
+                }
+            }
+            $this->arrParamas['menu_list'] = $db->select('permission','aid in ('.implode(',',$aids).') and parent_id=0','','','ordersort desc')->items;
+        }
 	}
 
 	function pageIndex(){
@@ -46,6 +59,7 @@ class main_main extends baselib{
 			$db = new SDb();
 			$teams = $db->select('jf_position'.SUF, 'parent_id=0')->items;
 			$this->arrParamas['teams'] = $teams;
+            $this->arrParamas['roles'] = $db->select('permission_role')->items;
 			return $this->render('cp/addstaff.html', $this->arrParamas);
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
@@ -139,6 +153,7 @@ class main_main extends baselib{
 			$datetime = time();
 			$dateymd = date('Y-m-d', $datetime);
 			$posLevel = (int)$post['posLevel'];
+            $roleid = (int)$post['roleid'];
 			$db = new SDb();
 			if(strlen($staff_name) <= 0){
 				return $this->alert('员工姓名不能为空');
@@ -155,7 +170,7 @@ class main_main extends baselib{
 			$staff_level = $arrPos['pos_name'];
 			$strInsert = 'staff_name='.'"'.$staff_name.'"'.',password="'.md5($password).'"'.',staff_sex='.$staff_sex.',joinymd='.'"'.$joinymd.'"'.',jointime='.$jointime.',score='.$score
 						 .',staff_level="'.$staff_level.'"'.',staff_department='.$staff_department.',staff_position='.$staff_position.',staff_limit='.
-						 $staff_limit.',datetime='.$datetime.',dateymd="'.$dateymd.'"'.',pos_level='.$posLevel;
+						 $staff_limit.',datetime='.$datetime.',dateymd="'.$dateymd.'"'.',pos_level='.$posLevel.',roleid='.$roleid;
 			if($db->insert('jf_staff'.SUF, $strInsert)){
 				return $this->alert('添加员工成功', $this->makeUrl('main/addstaff', 'main'));
 			} else {
@@ -648,7 +663,13 @@ class main_main extends baselib{
 			$this->arrParamas['sort'] = $sort;
 			$this->arrParamas['staffs'] = $arrStaffs;
 			$this->arrParamas['departments'] = $arrDepartments;
-			return $this->render('cp/scoretable.html', $this->arrParamas);
+            $this->arrParamas['queryStr'] = http_build_query($get);
+            $this->arrParamas['doprint'] = isset($get['doprint']) ? $get['doprint'] : 0;
+            if ($this->arrParamas['doprint']) {
+                return $this->render('cp/scoretable_print.html', $this->arrParamas);
+            } else {
+                return $this->render('cp/scoretable.html', $this->arrParamas);
+            }
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
 		}
@@ -986,7 +1007,20 @@ class main_main extends baselib{
 	//部门编辑
 	function pageTeamAbout(){
 		if($_SESSION['staffLimit'] > 0){
-			return $this->render('cp/teamabout.html');
+            $get = $this->safeData($_GET);
+            $page = (int)$get['p']>1 ? $get['p']:1;
+            $limit = 9;
+            $db = new SDb();
+            $db->setCount(true);
+            $db->setLimit($limit);
+            $db->setPage($page);
+            $teams = $db->select('jf_position'.SUF, 'parent_id=0');
+            if($teams->totalPage > 1){
+                $this->arrParamas['pagebar'] =  $this->pagebar($page, $teams->totalPage, $limit);
+            }
+            $this->arrParamas['teams'] = $teams->items;
+            return $this->render('cp/teamabout.html', $this->arrParamas);
+//			return $this->render('cp/teamabout.html');
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
 		}
@@ -1503,5 +1537,298 @@ class main_main extends baselib{
 		}
 	}
 
+
+	function pageImport() {
+        if($_SESSION['staffLimit'] > 0){
+            $db = new SDb();
+            $get = $this->safeData($_GET);
+            if (isset($get['type']) && $get['type'] == 1) {
+            	// 导出
+				$tabledump = '';
+				// list tables;
+				$tables = $db->execute('show tables');
+//				var_dump($tables);
+                foreach ($tables as $table) {
+                	$tableName = array_shift($table);
+                	$createTable = $db->execute('SHOW CREATE TABLE `'.$tableName.'`');
+//                	var_dump($createTable);
+					$tabledump .= "DROP TABLE IF EXISTS `$tableName`;\n";
+					$tabledump .= $createTable[0]['Create Table'].";\n\n";
+					$rows = $db->select($tableName);
+//					var_dump($rows);
+//					break;
+                    if (!empty($rows->items)) {
+                    	foreach ($rows->items as $item) {
+//                    		var_dump($item);
+                            $comma = "";
+                            $tabledump .= "INSERT INTO `$tableName` VALUES (";
+                            foreach ($item as $field=>$fieldVal) {
+                            	$tabledump .= $comma. "'".str_replace('\'', '\\\'', $fieldVal)."'";
+                            	$comma = ",";
+							}
+							$tabledump .= ");\n";
+						}
+						$tabledump .="\n";
+
+					}
+				}
+//				var_dump($tabledump);
+				$filetype = 'sql';
+                $filename = 'jifensystem_'.date('YmdHis').'00'.mt_rand(1,10).'.sql';
+                header('Pragma: public');
+                header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+                header('Cache-Control: no-store, no-cache, must-revalidate');
+                header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+                header('Content-Transfer-Encoding: binary');
+                header('Content-Encoding: none');
+                header('Content-type: '.$filetype);
+                header('Content-Disposition: attachment; filename="'.$filename.'"');
+                header('Content-length: '.strlen($tabledump));
+                echo $tabledump;
+                exit;
+
+			} else if (isset($_FILES['uploadfile']) && !empty($_FILES['uploadfile'])) {
+            	// 导入
+                $uploadinfo = $_FILES['uploadfile'];
+                $filename = $uploadinfo['tmp_name'];
+                if (!$filename) {
+                    return $this->alert('您没有选择文件上传', $this->makeUrl('main/import', 'main'));
+				}
+                $sql = file_get_contents($filename);
+                $queries_arr = explode(";\n", $sql);
+                unset($sql);
+                foreach ($queries_arr as $query) {
+//                    var_dump(trim($query));
+                	$db->execute(trim($query));
+				}
+                return $this->alert('导入成功', $this->makeUrl('main/import', 'main'));
+			}
+            $html = $this->render('cp/import.html', $this->arrParamas);
+        } else {
+            return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
+		}
+	}
+
+    //查看报表
+    function pageScoreRank(){
+        if($_SESSION['staffLimit'] > 0){
+            $get = $this->safeData($_GET);
+            $page = (int)$get['p']>1 ? $get['p']:1;
+            $rank = ($page-1)*9+1;
+            $spos = (int)$get['spos'];
+            $this->arrParamas['rank'] = $rank;
+            $limit = 9;
+            $sex = isset($get['sex'])? (int)$get['sex'] : -1;
+            $arrCondition = array();
+            if($sex !== -1){
+                $arrCondition['js.staff_sex'] = $sex;
+            }
+            $this->arrParamas['sex'] = $sex;
+            $sort = (int)$get['sort']===1||(int)$get['sort']===2?(int)$get['sort']:1;
+            $st = (int)$get['st'];
+            $strt = strtotime((string)$get['strt']);
+            $endt = strtotime((string)$get['endt']);
+            $posLevel = (int)$get['pl'];
+            $classId = isset($get['score_class']) ? intval($get['score_class'][0]) : 0;
+            $this->arrParamas['class_pid'] = (int)$get['class_pid'];
+            $db = new SDb();
+            if(!$strt && !$endt){
+                $strt = strtotime(date('Y-m'.'-01'));
+                $endt = strtotime(date('Y-m-d'));
+            } else if(!$strt || !$endt){
+                $endt = $strt? $strt:$endt;
+                $strt = strtotime(date('Y-m', $endt).'-01');
+            } else if($strt>$endt){
+                $tmp = $strt;
+                $strt = $endt;
+                $endt = $tmp;
+            }
+
+            $this->arrParamas['strt'] = date('Y-m-d', $strt);
+            $this->arrParamas['endt'] = date('Y-m-d', $endt);
+            $arrCondition[] = 'js.staff_id != 10000';
+            $arrCondition[] = '(joi.datetime>='.$strt.' and joi.datetime<='.($endt+86399).')';
+            $arrCondition['is_leave'] = 0;
+            if($posLevel !== 0){
+                $arrCondition['js.pos_level'] = $posLevel;
+                $this->arrParamas['pl'] = $posLevel;
+            }
+
+            if($st>0){
+                $arrCondition['staff_department']= $st;
+                if($spos > 0){
+                    $arrCondition['staff_position'] = $spos;
+                    $this->arrParamas['spos'] = $spos;
+                    $this->arrParamas['sposes'] = $db->select('jf_position'.SUF, array('parent_id'=>$st))->items;
+                }
+            }
+            $this->arrParamas['st'] = $st;
+            if ($classId > 0) {
+            	$arrCondition['jsd.class_id'] = $classId;
+			}
+
+            $db->setLimit($limit);
+            $db->setPage($page);
+            $db->setCount(true);
+            $strItem = 'js.staff_id as staff_id,js.staff_name as staff_name, js.staff_sex as staff_sex, js.staff_level as staff_level, joi.deal_score as total,joi.deal_reason as reason,jsc.class_name as class_name,jsc.parent_id as class_pid';
+//            $groupby = 'js.staff_id';
+            $groupby = '';
+            $orderby = ('total '.($sort===2?'asc':'desc'));
+//            $leftjoin = 'jf_operation_info'.SUF.' as joi on js.staff_id=joi.staff_id';
+            $leftjoin = array(
+            	'jf_operation_info'.SUF.' as joi'=>'js.staff_id=joi.staff_id',
+            	'jf_score_detail'.SUF.' as jsd'=>'jsd.score_detail_id=joi.score_detail_id',
+                'jf_score_class'.SUF.' as jsc'=>'jsc.class_id=jsd.class_id'
+			);
+            $arrResults = $db->select('jf_staff'.SUF.'` as `js', $arrCondition, $strItem, $groupby, $orderby, $leftjoin);
+            $db->setLimit(0);
+            $arrResults->totalSize = count($db->select('jf_staff'.SUF.'` as `js', $arrCondition, $strItem, $groupby, $orderby, $leftjoin)->items);
+            $arrResults->totalPage = ceil($arrResults->totalSize/1.0/$limit);
+            if($arrResults->totalPage>1){
+                $this->arrParamas['pagebar'] = $this->pagebar($page, $arrResults->totalPage, $limit);
+            }
+            if($arrResults->totalSize > 0){
+                foreach ($arrResults->items as &$value) {
+                    $add = 0;
+                    $sub = 0;
+                    if($value['total'] > 0){
+                        $add = $value['total'];
+                    } else {
+                        $sub = $value['total'];
+                    }
+                    $value['add'] = (int)$add;
+                    $value['sub'] = (int)$sub;
+                }
+            }
+            $arrStaffs = $arrResults->items;
+
+            $arrCondition = array('parent_id'=>0);
+            $arrDepartments = $db->select('jf_position'.SUF,$arrCondition)->items;
+            $arrClasses = $db->select('jf_score_class'.SUF,'parent_id=0')->items;
+
+            $this->sortArray($arrStaffs, $sort, 'total');
+            $this->arrParamas['sort'] = $sort;
+            $this->arrParamas['staffs'] = $arrStaffs;
+            $this->arrParamas['departments'] = $arrDepartments;
+            $this->arrParamas['classes'] = $arrClasses;
+            $this->arrParamas['queryStr'] = http_build_query($get);
+            $this->arrParamas['doprint'] = isset($get['doprint']) ? $get['doprint'] : 0;
+            if ($this->arrParamas['doprint']) {
+                return $this->render('cp/scorerank_print.html', $this->arrParamas);
+			} else {
+                return $this->render('cp/scorerank.html', $this->arrParamas);
+			}
+        } else {
+            return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
+        }
+    }
+
+
+    public function pagePermission() {
+        $get = $this->safeData($_GET);
+        $this->arrParamas['roleid'] = $get['roleid'];
+        $db = new SDb();
+        $this->arrParamas['roles'] = $db->select('permission_role')->items;
+        return $this->render('cp/permission.html', $this->arrParamas);
+    }
+
+    public function pageGetPermission() {
+        Tpl::getHtmlStr(true);
+        $get = $this->safeData($_GET);
+        $roleid = $get['roleid'];
+        $parentid = isset($get['parent_id']) ? intval($get['parent_id']) : 0;
+        $db = new SDb();
+        $aids_map = $db->select('permission_map',array('roleid'=>$roleid), 'aid')->items;
+        $aids = array();
+        if ($aids_map) {
+            foreach ($aids_map as $aid_map) {
+                $aids[] = $aid_map['aid'];
+            }
+        }
+        $permissions = $db->select('permission',array('parent_id'=>$parentid),'','','ordersort desc')->items;
+        foreach ($permissions as $key=>$permission) {
+            $permissions[$key]['ishave'] = in_array($permission['aid'],$aids);
+            $children = $db->select('permission',array('parent_id'=>$permission['aid']),'','','ordersort desc')->items;
+            if ($children) {
+            	foreach ($children as $ckey=>$child) {
+            		$children[$ckey]['ishave'] = in_array($child['aid'], $aids);
+            		// 第三级权限
+                    $threechildren = $db->select('permission',array('parent_id'=>$child['aid']),'','','ordersort desc')->items;
+                    if ($threechildren) {
+                    	foreach ($threechildren as $thkey=>$threechild) {
+                    		$threechildren[$thkey]['ishave'] = in_array($threechild['aid'], $aids);
+						}
+						$children[$ckey]['children'] = $threechildren;
+					}
+				}
+				$permissions[$key]['children'] = $children;
+			}
+
+        }
+        echo json_encode(array('status'=>1,'data'=>$permissions));
+        Tpl::getHtmlStr(false);
+    }
+
+    // 添加权限
+    public function pageAddPermission() {
+        Tpl::getHtmlStr(true);
+        $get = $this->safeData($_GET);
+        $db = new SDb();
+        $permission = array('name'=>$get['name'],'url'=>$get['url'],'parent_id'=>intval($get['parent_id']));
+        $permission['aid'] = $db->insert('permission','name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
+        echo json_encode(array('status'=>1,'data'=>$permission));
+        Tpl::getHtmlStr(false);
+    }
+
+    // 删除权限
+    public function pageDeletePermission() {
+        Tpl::getHtmlStr(true);
+        $get = $this->safeData($_GET);
+        $db = new SDb();
+        $aid = intval($get['aid']);
+        $isdel = $db->delete('permission',array('aid'=>$aid));
+        echo json_encode(array('status'=>1,'data'=>array(),'msg'=>$isdel ? '删除成功':'删除失败'));
+        Tpl::getHtmlStr(false);
+
+    }
+
+    // 编辑权限
+    public function pageEditPermission() {
+        Tpl::getHtmlStr(true);
+        $get = $this->safeData($_GET);
+        $db = new SDb();
+        $aid = intval($get['aid']);
+        $isSuccess = $db->update('permission',array('aid'=>$aid),'name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
+        echo json_encode(array('status'=>1,'data'=>array(),'msg'=>$isSuccess ? '修改成功' : '修改失败'));
+        Tpl::getHtmlStr(false);
+    }
+
+    public function pageAddRolePermission() {
+        Tpl::getHtmlStr(true);
+        $get = $_GET;
+        $db = new SDb();
+        $roleid = intval($get['roleid']);
+        $db->delete('permission_map',array('roleid'=>$roleid));
+        if (isset($get['aid']) && $get['aid']) {
+            $aids = explode(',',$get['aid']);
+            foreach ($aids as $iAid) {
+                $db->insert('permission_map','roleid='.$roleid.',aid='.intval($iAid));
+            }
+        }
+        echo json_encode(array('status'=>1,'data'=>array(),'msg'=> '保存成功'));
+        Tpl::getHtmlStr(false);
+
+    }
+
+    public function pageAddRole() {
+        Tpl::getHtmlStr(true);
+        $get = $this->safeData($_GET);
+        $db = new SDb();
+        $permission = array('rolename'=>$get['rolename']);
+        $permission['aid'] = $db->insert('permission_role','rolename="'.$get['rolename'].'"');
+        echo json_encode(array('status'=>1,'data'=>$permission));
+        Tpl::getHtmlStr(false);
+
+    }
 }
 ?>
