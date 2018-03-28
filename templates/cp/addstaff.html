@@ -91,7 +91,7 @@
                             <label for="roleid"></label>
                             <select class="wbk04" name="roleid" id="roleid" style="width:100px;">
                                 {/foreach($roles as $role)/}
-                                <option value="{/$role['roleid']/}" {/if $role['roleid']==$param_roleid/}selected{//if/}>{/$role['rolename']/}</option>
+                                <option value="{/$role['roleid']/}">{/$role['rolename']/}</option>
                                 {//foreach/}
                             </select>
                         </div>
