@@ -2,6 +2,8 @@
 // var rooturl = "http://119.23.117.81/main/main/";
 var limiturl = "http://119.23.117.81/main/main/checklimit";
 var rooturl = "http://119.23.117.81/main/main/";
+// var limiturl = "http://www.jfsystem.com/main/main/checklimit";
+// var rooturl = "http://www.jfsystem.com/main/main/";
 // JavaScript Document
 $(document).ready(function () {
 	/*点击新增员工数据按钮*/
@@ -405,14 +407,6 @@ $(document).ready(function () {
 	});
 	/*选择积分方式*/
 
-	$("select[name='staffLimit']").click(function () {
-		if(this.options[this.selectedIndex].value == 1) {
-		    $('#roleid_div').show();
-		} else {
-            $('#roleid_div').hide();
-		}
-    });
-	
 }); 
 
 /*查看权限*/

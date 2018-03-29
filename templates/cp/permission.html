@@ -78,7 +78,7 @@
                                 角色：
                                 <select name="roleid" id="roleselect">
                                     {/foreach($roles as $role)/}
-                                    	<option value="{/$role['roleid']/}" {/if $role['roleid']==$param_roleid/}selected{//if/}>{/$role['rolename']/}</option>
+                                    	<option value="{/$role['roleid']/}">{/$role['rolename']/}</option>
                                     {//foreach/}
                                 </select>
 

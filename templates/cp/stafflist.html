@@ -42,6 +42,8 @@
                 <td width="56" height="36"><span class="bt">性别</span></td>
                 <td width="130" height="36"><span class="bt">担任职务</span></td>
                 <td width="80" height="36"><span class="bt">当前积分</span></td>
+                  <td width="80" height="36"><span class="bt">权限</span></td>
+                  <td width="80" height="36"><span class="bt">角色</span></td>
                 <td width="240" height="36"><span class="bt">操作</span></td>
               </tr>
               {/$j=count($staffs)/}
@@ -54,6 +56,15 @@
                         <td height="36"><span class="word02">{/if $staff['staff_sex'] == 0/}女{/else/}男{//if/}</span></td>
                         <td height="36"><span class="word02">{/$staff['staff_level']/}</span></td>
                         <td height="36"><span class="word02">{/$staff['score']/}</span></td>
+                          <td height="36"><span class="word02">
+                          {/if $staff['staff_limit'] == 1/}管理员{/else/}普通{//if/}
+                          </span></td>
+                        <td height="36"><span class="word02">
+                          {/foreach($roles as $role)/}
+                          {/if $role['roleid']==$staff['roleid']/}{/$role['rolename']/}{//if/}
+                          {//foreach/}
+                        </span>
+                        </td>
                         <td height="36"><span class="word02"><a href="{/geturl 'main/editstaff' 'main'/}?sid={/$staff['staff_id']/}">编辑</a>|<a href="{/geturl 'main/scoreinfo' 'main'/}?sid={/$staff['staff_id']/}">积分详情</a>|<a href="{/geturl 'main/autoscore' 'main'/}?sid={/$staff['staff_id']/}">查看自动加分</a>
                         {/if $staff['is_leave']!=1/}{/if $staffLimit>1/}|<a name="leave" href="{/geturl 'main/leave' 'main'/}?pid={/$staff['staff_id']/}">离职</a>{//if/}{/else/}|已离职{//if/}</span></td>
                       </tr>

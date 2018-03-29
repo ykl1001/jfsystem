@@ -74,7 +74,7 @@ class main_main extends baselib{
 			$teams = $db->select('jf_position'.SUF, 'parent_id=0')->items;
 			$this->arrParamas['teams'] = $teams;
 			$arrStaff = $db->selectOne('jf_staff'.SUF, array('staff_id'=>$staff_id), 'staff_name,staff_sex,joinymd,pos_level,score,staff_level,staff_limit,password,staff_department'.
-									   ',staff_position');
+									   ',staff_position,roleid');
 			if(!$arrStaff) {
 				return $this->alert('员工信息不存在，请核对', $this->makeUrl('main/stafflist', 'main'));
 			}
@@ -82,6 +82,7 @@ class main_main extends baselib{
 			$this->arrParamas['poses'] = $poses->items;
 			$_SESSION['upstaffid'] = $staff_id;
 			$this->arrParamas['staff'] = $arrStaff;
+            $this->arrParamas['roles'] = $db->select('permission_role')->items;
 			return $this->render('cp/editstaff.html', $this->arrParamas);
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
@@ -106,6 +107,7 @@ class main_main extends baselib{
 			$dateymd = date('Y-m-d', $datetime);
 			$strUpdate = '';
 			$posLevel = (int)$post['posLevel'];
+            $roleid = (int)$post['roleid'];
 			$db = new SDb();
 			if(strlen($staff_name) <= 0){
 				return $this->alert('员工姓名不能为空');
@@ -126,7 +128,7 @@ class main_main extends baselib{
 			$staff_level = $arrPos['pos_name'];
 			$strUpdate .= 'staff_name='.'"'.$staff_name.'"'.',staff_sex='.$staff_sex.',joinymd='.'"'.$joinymd.'"'.',jointime='.$jointime.',score='.$score
 						 .',staff_level="'.$staff_level.'"'.',staff_department='.$staff_department.',staff_position='.$staff_position.',staff_limit='.
-						 $staff_limit.',datetime='.$datetime.',dateymd="'.$dateymd.'"'.',pos_level='.$posLevel;
+						 $staff_limit.',datetime='.$datetime.',dateymd="'.$dateymd.'"'.',pos_level='.$posLevel.',roleid='.$roleid;
 			if(!$db->update('jf_staff'.SUF, array('staff_id'=>$_SESSION['upstaffid']), $strUpdate)){
 				return $this->alert('操作失败请重试');
 			}
@@ -559,6 +561,7 @@ class main_main extends baselib{
 			$arrCondition = array('parent_id'=>0);
 			$arrDepartments = $db->select('jf_position'.SUF,$arrCondition)->items;
 			$this->arrParamas['departments'] = $arrDepartments;
+            $this->arrParamas['roles'] = $db->select('permission_role')->items;
 
 			return $this->render('cp/stafflist.html', $this->arrParamas);
 		} else {
