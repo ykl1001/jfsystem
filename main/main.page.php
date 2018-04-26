@@ -10,14 +10,14 @@ class main_main extends baselib{
 		if ($iStaffId && $_SESSION['staffLimit'] != 255) {
 		    // 获取用户菜单列表
             $db = new SDb();
-            $aids_map = $db->select('permission_map',array('roleid'=>$_SESSION['roleid']), 'aid')->items;
+            $aids_map = $db->select('permission_map'.SUF,array('roleid'=>$_SESSION['roleid']), 'aid')->items;
             $aids = array();
             if ($aids_map) {
                 foreach ($aids_map as $aid_map) {
                     $aids[] = $aid_map['aid'];
                 }
             }
-            $this->arrParamas['menu_list'] = $db->select('permission','aid in ('.implode(',',$aids).') and parent_id=0','','','ordersort desc')->items;
+            $this->arrParamas['menu_list'] = $db->select('permission'.SUF,'aid in ('.implode(',',$aids).') and parent_id=0','','','ordersort desc')->items;
         }
 	}
 
@@ -59,7 +59,7 @@ class main_main extends baselib{
 			$db = new SDb();
 			$teams = $db->select('jf_position'.SUF, 'parent_id=0')->items;
 			$this->arrParamas['teams'] = $teams;
-            $this->arrParamas['roles'] = $db->select('permission_role')->items;
+            $this->arrParamas['roles'] = $db->select('permission_role'.SUF)->items;
 			return $this->render('cp/addstaff.html', $this->arrParamas);
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
@@ -82,7 +82,7 @@ class main_main extends baselib{
 			$this->arrParamas['poses'] = $poses->items;
 			$_SESSION['upstaffid'] = $staff_id;
 			$this->arrParamas['staff'] = $arrStaff;
-            $this->arrParamas['roles'] = $db->select('permission_role')->items;
+            $this->arrParamas['roles'] = $db->select('permission_role'.SUF)->items;
 			return $this->render('cp/editstaff.html', $this->arrParamas);
 		} else {
 			return $this->alert('你不是管理员，无权进行此操作',$this->makeUrl('main/loginpage', 'main'));
@@ -561,7 +561,7 @@ class main_main extends baselib{
 			$arrCondition = array('parent_id'=>0);
 			$arrDepartments = $db->select('jf_position'.SUF,$arrCondition)->items;
 			$this->arrParamas['departments'] = $arrDepartments;
-            $this->arrParamas['roles'] = $db->select('permission_role')->items;
+            $this->arrParamas['roles'] = $db->select('permission_role'.SUF)->items;
 
 			return $this->render('cp/stafflist.html', $this->arrParamas);
 		} else {
@@ -1731,7 +1731,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $this->arrParamas['roleid'] = $get['roleid'];
         $db = new SDb();
-        $this->arrParamas['roles'] = $db->select('permission_role')->items;
+        $this->arrParamas['roles'] = $db->select('permission_role'.SUF)->items;
         return $this->render('cp/permission.html', $this->arrParamas);
     }
 
@@ -1741,22 +1741,22 @@ class main_main extends baselib{
         $roleid = $get['roleid'];
         $parentid = isset($get['parent_id']) ? intval($get['parent_id']) : 0;
         $db = new SDb();
-        $aids_map = $db->select('permission_map',array('roleid'=>$roleid), 'aid')->items;
+        $aids_map = $db->select('permission_map'.SUF,array('roleid'=>$roleid), 'aid')->items;
         $aids = array();
         if ($aids_map) {
             foreach ($aids_map as $aid_map) {
                 $aids[] = $aid_map['aid'];
             }
         }
-        $permissions = $db->select('permission',array('parent_id'=>$parentid),'','','ordersort desc')->items;
+        $permissions = $db->select('permission'.SUF,array('parent_id'=>$parentid),'','','ordersort desc')->items;
         foreach ($permissions as $key=>$permission) {
             $permissions[$key]['ishave'] = in_array($permission['aid'],$aids);
-            $children = $db->select('permission',array('parent_id'=>$permission['aid']),'','','ordersort desc')->items;
+            $children = $db->select('permission'.SUF,array('parent_id'=>$permission['aid']),'','','ordersort desc')->items;
             if ($children) {
             	foreach ($children as $ckey=>$child) {
             		$children[$ckey]['ishave'] = in_array($child['aid'], $aids);
             		// 第三级权限
-                    $threechildren = $db->select('permission',array('parent_id'=>$child['aid']),'','','ordersort desc')->items;
+                    $threechildren = $db->select('permission'.SUF,array('parent_id'=>$child['aid']),'','','ordersort desc')->items;
                     if ($threechildren) {
                     	foreach ($threechildren as $thkey=>$threechild) {
                     		$threechildren[$thkey]['ishave'] = in_array($threechild['aid'], $aids);
@@ -1778,7 +1778,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $db = new SDb();
         $permission = array('name'=>$get['name'],'url'=>$get['url'],'parent_id'=>intval($get['parent_id']));
-        $permission['aid'] = $db->insert('permission','name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
+        $permission['aid'] = $db->insert('permission'.SUF,'name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
         echo json_encode(array('status'=>1,'data'=>$permission));
         Tpl::getHtmlStr(false);
     }
@@ -1789,7 +1789,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $db = new SDb();
         $aid = intval($get['aid']);
-        $isdel = $db->delete('permission',array('aid'=>$aid));
+        $isdel = $db->delete('permission'.SUF,array('aid'=>$aid));
         echo json_encode(array('status'=>1,'data'=>array(),'msg'=>$isdel ? '删除成功':'删除失败'));
         Tpl::getHtmlStr(false);
 
@@ -1801,7 +1801,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $db = new SDb();
         $aid = intval($get['aid']);
-        $isSuccess = $db->update('permission',array('aid'=>$aid),'name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
+        $isSuccess = $db->update('permission'.SUF,array('aid'=>$aid),'name="'.$get['name'].'",url="'.$get['url'].'",parent_id='.intval($get['parent_id']));
         echo json_encode(array('status'=>1,'data'=>array(),'msg'=>$isSuccess ? '修改成功' : '修改失败'));
         Tpl::getHtmlStr(false);
     }
@@ -1811,11 +1811,11 @@ class main_main extends baselib{
         $get = $_GET;
         $db = new SDb();
         $roleid = intval($get['roleid']);
-        $db->delete('permission_map',array('roleid'=>$roleid));
+        $db->delete('permission_map'.SUF,array('roleid'=>$roleid));
         if (isset($get['aid']) && $get['aid']) {
             $aids = explode(',',$get['aid']);
             foreach ($aids as $iAid) {
-                $db->insert('permission_map','roleid='.$roleid.',aid='.intval($iAid));
+                $db->insert('permission_map'.SUF,'roleid='.$roleid.',aid='.intval($iAid));
             }
         }
         echo json_encode(array('status'=>1,'data'=>array(),'msg'=> '保存成功'));
@@ -1828,7 +1828,7 @@ class main_main extends baselib{
         $get = $this->safeData($_GET);
         $db = new SDb();
         $permission = array('rolename'=>$get['rolename']);
-        $permission['roleid'] = $db->insert('permission_role','rolename="'.$get['rolename'].'"');
+        $permission['roleid'] = $db->insert('permission_role'.SUF,'rolename="'.$get['rolename'].'"');
         echo json_encode(array('status'=>1,'data'=>$permission));
         Tpl::getHtmlStr(false);
 
